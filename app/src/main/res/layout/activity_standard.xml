@@ -7,32 +7,32 @@
     tools:context="cc.rome753.demo.StandardActivity">
 
     <Button
-        android:onClick="startNormal"
-        android:text="start normal activity"
+        android:onClick="startStandard"
+        android:text="@string/start_standard_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startSingleTop"
-        android:text="start singleTop activity"
+        android:text="@string/start_singletop_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startSingleTask"
-        android:text="start singleTask activity"
+        android:text="@string/start_singletask_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startSingleInstance"
-        android:text="start singleInstance activity"
+        android:text="@string/start_singleinstance_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startDialogActivity"
-        android:text="start dialog activity"
+        android:text="@string/start_dialog_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

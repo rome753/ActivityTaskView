@@ -37,7 +37,7 @@ public class BaseActivity extends AppCompatActivity{
         DialogActivity.start(this);
     }
 
-    public void startNormal(View v){
+    public void startStandard(View v){
         StandardActivity.start(this);
     }
 
