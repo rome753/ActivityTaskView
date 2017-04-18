@@ -15,19 +15,19 @@ monitors all activities' lifecycle.
 ### Use in demo(show different launch mode)
 
 #### standard mode
-![standard](http://img.blog.csdn.net/20170418111814059?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcm9tZTc1Mw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![standard](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/standard.gif)
 
 #### singletop mode
-![singletop](http://img.blog.csdn.net/20170418111936118?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcm9tZTc1Mw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![singletop](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/singletop.gif)
 
 #### singletask mode
-![singletask](http://img.blog.csdn.net/20170418112005124?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcm9tZTc1Mw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![singletask](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/singletask.gif)
 
 #### singleinstance mode
-![singleinstance](http://img.blog.csdn.net/20170418112209329?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcm9tZTc1Mw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![singleinstance](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/singleinstance.gif)
 
 #### dialog style activity
-![dialog](http://img.blog.csdn.net/20170418112229361?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcm9tZTc1Mw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![dialog](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/dialog.gif)
 
 ## Usage
 1) add this in build.gradle
