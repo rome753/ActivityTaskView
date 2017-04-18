@@ -1,16 +1,16 @@
 # ActivityTaskView
-ActivityTaskView is a popup window that shows activity task stacks in a app,
+ActivityTaskView is a float window that shows activity task stacks in a app,
 monitors all activities' lifecycle.
 
 ## Introduction
 
 ### Colors of activity lifecycles
-* <font color="green">onCreate</font>
-* <font color="yellow">onStart</font>
-* <font color="red">onResume</font>
-* <font color="white">onPause</font>
-* <font color="gray">onStop</font>
-* <font color="black">onDestroy</font>
+* <font color=green>onCreate</font>
+* <font color=yellow>onStart</font>
+* <font color=red>onResume</font>
+* <font color=white>onPause</font>
+* <font color=gray>onStop</font>
+* <font color=black>onDestroy</font>
 
 ### Use in demo(show different launch mode)
 
@@ -30,7 +30,7 @@ monitors all activities' lifecycle.
 ![dialog](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/dialog.gif)
 
 ## Usage
-1) add this in build.gradle
+1) add dependence in module's build.gradle
 > compile 'cc.rome753:activitytaskview:0.8.5'
 
 2) add system alert permission in AndroidManifest.xml
