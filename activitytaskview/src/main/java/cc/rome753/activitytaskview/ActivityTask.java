@@ -135,7 +135,7 @@ public class ActivityTask {
 
         /**
          * when activity lifecycle changed, notify the observer
-         * @param pair lifecycle/activityId
+         * @param pair lifecycle:0-5/activityId:hashCode
          */
         void lifecycleChange(Pair<Integer, Integer> pair){
             setChanged();
