@@ -4,13 +4,14 @@ monitors all activities' lifecycle.
 
 ## Introduction
 
-### Colors of activity lifecycles
-* <font color=green>onCreate</font>
-* <font color=yellow>onStart</font>
-* <font color=red>onResume</font>
-* <font color=white>onPause</font>
-* <font color=gray>onStop</font>
-* <font color=black>onDestroy</font>
+### Colors of activity lifecycles-
+
+- ![#00FF00](https://placehold.it/15/00FF00/000000?text=+) onCreate
+- ![#FFFF00](https://placehold.it/15/FFFF00/000000?text=+) onStart
+- ![#FF0000](https://placehold.it/15/FF0000/000000?text=+) onResume
+- ![#FFFFFF](https://placehold.it/15/FFFFFF/000000?text=+) onPause
+- ![#888888](https://placehold.it/15/888888/000000?text=+) onStop
+- ![#000000](https://placehold.it/15/000000/000000?text=+) onDestroy
 
 ### Use in demo(show different launch mode)
 
