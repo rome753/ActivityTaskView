@@ -1,6 +1,7 @@
 package cc.rome753.demo;
 
 import android.app.Application;
+import android.os.Build;
 
 import cc.rome753.activitytaskview.ActivityTask;
 
@@ -13,9 +14,9 @@ public class DemoApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-
-        ActivityTask.init(this, BuildConfig.DEBUG);
-
+        if(Build.VERSION.SDK_INT < 23) {
+            ActivityTask.init(this, BuildConfig.DEBUG);
+        }
     }
 
 }
