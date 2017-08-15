@@ -16,8 +16,8 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        versionCode 2
-        versionName "0.8.5"
+        versionCode 3
+        versionName "0.9.0"
 
     }
 
@@ -28,14 +28,14 @@ android {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
+//    testCompile 'junit:junit:4.12'
 }
 
 publish {
     userOrg = 'rome713bc'
     groupId = 'cc.rome753'
     artifactId = 'activitytaskview'
-    publishVersion = '0.8.5'
-    desc = 'Oh hi, this is a nice description for a project, right?'
+    publishVersion = '0.9.0'
+    desc = 'fix overlay window permission when android version >= 23'
     website = 'https://github.com/rome753/activitytaskview'
 }

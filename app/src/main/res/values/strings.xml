@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Demo</string>
+    <string name="app_name">ActivityTaskDemo</string>
     <string name="start_standard_activity">start standard activity</string>
     <string name="start_singletop_activity">start singleTop activity</string>
     <string name="start_singletask_activity">start singleTask activity</string>

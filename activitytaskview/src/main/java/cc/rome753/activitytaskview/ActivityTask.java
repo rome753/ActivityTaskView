@@ -3,8 +3,11 @@ package cc.rome753.activitytaskview;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -46,6 +49,16 @@ public class ActivityTask {
         if(!debug){
             return;
         }
+        if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(app)) {
+            Intent intent = new Intent(app, RequestOverlayActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            app.startActivity(intent);
+        }else {
+            addWindow(app);
+        }
+    }
+
+    static void addWindow(Application app) {
         activityLifecycleObservable = new ActivityLifecycleObservable();
         activityTaskView = new ActivityTaskView(app);
         activityTaskView.setObservable(activityLifecycleObservable);
