@@ -35,9 +35,6 @@ public class ActivityTaskView extends LinearLayout{
 
     public ActivityTaskView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        if(ActivityTask.debug) {
-            Log.w(TAG, "constructor");
-        }
         setOrientation(HORIZONTAL);
         setBackgroundColor(Color.parseColor("#33EEEEEE"));
         mLayoutMap = new TreeMap<>();

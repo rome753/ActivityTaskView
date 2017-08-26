@@ -29,9 +29,6 @@ public class ActivityTaskInfo {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof ActivityTaskInfo){
-            return taskId == ((ActivityTaskInfo)obj).getActivityId();
-        }
-        return false;
+        return obj instanceof ActivityTaskInfo && taskId == ((ActivityTaskInfo) obj).getActivityId();
     }
 }

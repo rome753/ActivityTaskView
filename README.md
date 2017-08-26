@@ -32,7 +32,7 @@ monitors all activities' lifecycle.
 
 ## Usage
 1) add dependence in module's build.gradle
-> compile 'cc.rome753:activitytaskview:0.8.5'
+> compile 'cc.rome753:activitytaskview:0.9.0'
 
 2) add system alert permission in AndroidManifest.xml
 ```
