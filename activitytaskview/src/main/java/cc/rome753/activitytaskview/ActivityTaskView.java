@@ -15,14 +15,14 @@ import java.util.TreeMap;
  * Created by rome753@163.com on 2017/3/31.
  */
 
-public class ActivityTaskView extends LinearLayout{
+public class ActivityTaskView extends LinearLayout {
 
     public static final String TAG = ActivityTaskView.class.getSimpleName();
 
     TreeMap<Integer, LinearLayout> mLayoutMap;
 
     HashMap<Integer, ObserverTextView> mObserverTextViewMap;
-    
+
     private ActivityTask.ActivityLifecycleObservable mObservable;
 
     public ActivityTaskView(Context context) {
@@ -41,7 +41,7 @@ public class ActivityTaskView extends LinearLayout{
         mObserverTextViewMap = new HashMap<>();
     }
 
-    public void setObservable(ActivityTask.ActivityLifecycleObservable observable){
+    public void setObservable(ActivityTask.ActivityLifecycleObservable observable) {
         mObservable = observable;
     }
 
@@ -60,46 +60,34 @@ public class ActivityTaskView extends LinearLayout{
             params.leftMargin = 2;
             layout.setLayoutParams(params);
 
-            if(ActivityTask.debug) {
-                Log.i(TAG, "addLayout " + taskId);
-            }
+            Log.i(TAG, "addLayout " + taskId);
         }
-        layout.addView(textView,0);
+        layout.addView(textView, 0);
         LinearLayout.LayoutParams params = (LayoutParams) textView.getLayoutParams();
         params.bottomMargin = 1;
         textView.setLayoutParams(params);
-        if(ActivityTask.debug) {
-            Log.i(TAG, "addObserverTextView " + taskId);
-        }
+        Log.i(TAG, "addObserverTextView " + taskId);
     }
 
     public void pop(ActivityTaskInfo activityTaskInfo) {
         int taskId = activityTaskInfo.getTaskId();
         LinearLayout layout = mLayoutMap.get(taskId);
         if (layout == null) {
-            if(ActivityTask.debug) {
-                Log.e(TAG, "LinearLayout not found");
-            }
+            Log.e(TAG, "LinearLayout not found");
             return;
         }
         ObserverTextView textView = mObserverTextViewMap.remove(activityTaskInfo.getActivityId());
         if (textView == null) {
-            if(ActivityTask.debug) {
-                Log.e(TAG, "ObserverTextView not found");
-            }
+            Log.e(TAG, "ObserverTextView not found");
             return;
         }
         mObservable.deleteObserver(textView);
         layout.removeView(textView);
-        if(ActivityTask.debug) {
-            Log.i(TAG, "removeObserverTextView " + taskId);
-        }
+        Log.i(TAG, "removeObserverTextView " + taskId);
         if (layout.getChildCount() == 0) {
             mLayoutMap.remove(taskId);
             removeView(layout);
-            if(ActivityTask.debug) {
-                Log.i(TAG, "removeLinearLayout " + taskId);
-            }
+            Log.i(TAG, "removeLinearLayout " + taskId);
         }
     }
 
@@ -125,7 +113,7 @@ public class ActivityTaskView extends LinearLayout{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mInnerX = event.getX();
                 mInnerY = event.getY();
@@ -136,7 +124,7 @@ public class ActivityTaskView extends LinearLayout{
                 WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
                 params.x = (int) (x - mInnerX);
                 params.y = (int) (y - mInnerY);
-                ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).updateViewLayout(this, params);
+                ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).updateViewLayout(this, params);
                 break;
         }
         return true;
