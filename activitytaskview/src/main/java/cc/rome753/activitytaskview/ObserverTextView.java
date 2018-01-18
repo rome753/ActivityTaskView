@@ -29,7 +29,7 @@ public class ObserverTextView extends TextView implements Observer{
     @Override
     public void update(Observable o, Object arg){
         ActivityTask.ColorInfo info = (ActivityTask.ColorInfo) arg;
-        if(info.getHashCode() == (int)getTag()) {
+        if(info.getActivityId() == (int)getTag()) {
             setTextColor(info.getColor());
         }
     }
