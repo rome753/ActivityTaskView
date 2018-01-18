@@ -45,10 +45,10 @@ public class ActivityTaskView extends LinearLayout {
         mObservable = observable;
     }
 
-    public void push(ActivityTaskInfo activityTaskInfo) {
-        int activityId = activityTaskInfo.getActivityId();
-        int taskId = activityTaskInfo.getTaskId();
-        ObserverTextView textView = createObserverTextView(activityId, activityTaskInfo.getActivityName());
+    public void push(ActivityTask.TaskInfo taskInfo) {
+        int activityId = taskInfo.getActivityId();
+        int taskId = taskInfo.getTaskId();
+        ObserverTextView textView = createObserverTextView(activityId, taskInfo.getActivityName());
         mObservable.addObserver(textView);
         mObserverTextViewMap.put(activityId, textView);
         LinearLayout layout = mLayoutMap.get(taskId);
@@ -69,14 +69,14 @@ public class ActivityTaskView extends LinearLayout {
         Log.i(TAG, "addObserverTextView " + taskId);
     }
 
-    public void pop(ActivityTaskInfo activityTaskInfo) {
-        int taskId = activityTaskInfo.getTaskId();
+    public void pop(ActivityTask.TaskInfo taskInfo) {
+        int taskId = taskInfo.getTaskId();
         LinearLayout layout = mLayoutMap.get(taskId);
         if (layout == null) {
             Log.e(TAG, "LinearLayout not found");
             return;
         }
-        ObserverTextView textView = mObserverTextViewMap.remove(activityTaskInfo.getActivityId());
+        ObserverTextView textView = mObserverTextViewMap.remove(taskInfo.getActivityId());
         if (textView == null) {
             Log.e(TAG, "ObserverTextView not found");
             return;

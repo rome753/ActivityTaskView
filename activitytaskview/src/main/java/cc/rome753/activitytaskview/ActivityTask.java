@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Gravity;
 import android.view.WindowManager;
 
@@ -37,6 +37,16 @@ public class ActivityTask {
      * not front: Activity A onPause -> Activity A onStop
      */
     private static boolean isFront;
+
+    private static final int[] COLORS = {
+            Color.GREEN,//onCreate
+            Color.YELLOW,//onStart
+            Color.RED,//onResume
+
+            Color.WHITE,//onPause
+            Color.GRAY,//onStop
+            Color.BLACK//onDestroy
+    };
 
     /**
      * init in your application onCreate()
@@ -81,21 +91,21 @@ public class ActivityTask {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             Log.w(TAG, activity.getClass().getName() + "@" + activity.hashCode() + " " + activity.getTaskId() + " " + " onActivityCreated");
-            activityLifecycleObservable.lifecycleChange(new Pair<>(0, activity.hashCode()));
-            activityTaskView.push(new ActivityTaskInfo(activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+            activityLifecycleObservable.lifecycleChange(new ColorInfo(COLORS[0], activity.hashCode()));
+            activityTaskView.push(new TaskInfo(activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
         }
 
         @Override
         public void onActivityStarted(Activity activity) {
             Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStarted");
-            activityLifecycleObservable.lifecycleChange(new Pair<>(1, activity.hashCode()));
+            activityLifecycleObservable.lifecycleChange(new ColorInfo(COLORS[1], activity.hashCode()));
 
         }
 
         @Override
         public void onActivityResumed(Activity activity) {
             Log.d(TAG, activity.getClass().getSimpleName() + " onActivityResumed");
-            activityLifecycleObservable.lifecycleChange(new Pair<>(2, activity.hashCode()));
+            activityLifecycleObservable.lifecycleChange(new ColorInfo(COLORS[2], activity.hashCode()));
             activityTaskView.setVisibility(VISIBLE);
             isFront = true;
         }
@@ -103,14 +113,14 @@ public class ActivityTask {
         @Override
         public void onActivityPaused(Activity activity) {
             Log.d(TAG, activity.getClass().getSimpleName() + " onActivityPaused");
-            activityLifecycleObservable.lifecycleChange(new Pair<>(3, activity.hashCode()));
+            activityLifecycleObservable.lifecycleChange(new ColorInfo(COLORS[3], activity.hashCode()));
             isFront = false;
         }
 
         @Override
         public void onActivityStopped(Activity activity) {
             Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStopped");
-            activityLifecycleObservable.lifecycleChange(new Pair<>(4, activity.hashCode()));
+            activityLifecycleObservable.lifecycleChange(new ColorInfo(COLORS[4], activity.hashCode()));
             activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
 
         }
@@ -124,8 +134,8 @@ public class ActivityTask {
         @Override
         public void onActivityDestroyed(Activity activity) {
             Log.w(TAG, activity.getClass().getSimpleName() + " onActivityDestroyed");
-            activityLifecycleObservable.lifecycleChange(new Pair<>(5, activity.hashCode()));
-            activityTaskView.pop(new ActivityTaskInfo(activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+            activityLifecycleObservable.lifecycleChange(new ColorInfo(COLORS[5], activity.hashCode()));
+            activityTaskView.pop(new TaskInfo(activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
         }
     };
 
@@ -134,11 +144,58 @@ public class ActivityTask {
         /**
          * when activity lifecycle changed, notify the observer
          *
-         * @param pair lifecycle:0-5/activityId:hashCode
+         * @param info ColorInfo
          */
-        void lifecycleChange(Pair<Integer, Integer> pair) {
+        void lifecycleChange(ColorInfo info) {
             setChanged();
-            notifyObservers(pair);
+            notifyObservers(info);
+        }
+    }
+
+    static class TaskInfo {
+        private int taskId;
+        private int activityId;
+        private String activityName;
+
+        public TaskInfo(int taskId, int activityId, String activityName) {
+            this.taskId = taskId;
+            this.activityId = activityId;
+            this.activityName = activityName;
+        }
+
+        public int getTaskId() {
+            return taskId;
+        }
+
+        public int getActivityId() {
+            return activityId;
+        }
+
+        public String getActivityName() {
+            return activityName;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof TaskInfo && taskId == ((TaskInfo) obj).getActivityId();
+        }
+    }
+
+    static class ColorInfo{
+        private int color;
+        private int hashCode;
+
+        public ColorInfo(int color, int hashCode) {
+            this.color = color;
+            this.hashCode = hashCode;
+        }
+
+        public int getColor() {
+            return color;
+        }
+
+        public int getHashCode() {
+            return hashCode;
         }
     }
 
