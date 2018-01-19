@@ -1,19 +1,10 @@
 package cc.rome753.demo;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+public class MainActivity extends BaseActivity {
 
-public class MainActivity extends AppCompatActivity {
-
-    public void onClick(View v) {
-        StandardActivity.start(this);
+    protected void init() {
+        setContentView(R.layout.activity_base);
+        setTitle(getClass().getSimpleName());
+        addCheckBoxes();
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-
 }

@@ -1,39 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cc.rome753.demo.StandardActivity">
 
+    <ScrollView
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/ll_container"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
     <Button
         android:onClick="startStandard"
+        android:textAllCaps="false"
         android:text="@string/start_standard_activity"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startSingleTop"
+        android:textAllCaps="false"
         android:text="@string/start_singletop_activity"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startSingleTask"
+        android:textAllCaps="false"
         android:text="@string/start_singletask_activity"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startSingleInstance"
+        android:textAllCaps="false"
         android:text="@string/start_singleinstance_activity"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:onClick="startDialogActivity"
+        android:textAllCaps="false"
         android:text="@string/start_dialog_activity"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>

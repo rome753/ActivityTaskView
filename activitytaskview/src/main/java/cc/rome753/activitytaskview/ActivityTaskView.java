@@ -25,6 +25,8 @@ public class ActivityTaskView extends LinearLayout {
 
     private ActivityTask.ActivityLifecycleObservable mObservable;
 
+    private int mStatusHeight;
+
     public ActivityTaskView(Context context) {
         this(context, null);
     }
@@ -39,6 +41,8 @@ public class ActivityTaskView extends LinearLayout {
         setBackgroundColor(Color.parseColor("#33EEEEEE"));
         mLayoutMap = new TreeMap<>();
         mObserverTextViewMap = new HashMap<>();
+
+        mStatusHeight = getStatusBarHeight();
     }
 
     public void setObservable(ActivityTask.ActivityLifecycleObservable observable) {
@@ -101,9 +105,6 @@ public class ActivityTaskView extends LinearLayout {
     private ObserverTextView createObserverTextView(int activityId, String text) {
         ObserverTextView textView = new ObserverTextView(getContext());
         textView.setText(text);
-        textView.setTextSize(10);
-        textView.setTextColor(Color.WHITE);
-        textView.setBackgroundColor(Color.parseColor("#33AAAAAA"));
         textView.setTag(activityId);
         return textView;
     }
@@ -123,10 +124,19 @@ public class ActivityTaskView extends LinearLayout {
                 float y = event.getRawY();
                 WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
                 params.x = (int) (x - mInnerX);
-                params.y = (int) (y - mInnerY);
+                params.y = (int) (y - mInnerY - mStatusHeight);
                 ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).updateViewLayout(this, params);
                 break;
         }
         return true;
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }
