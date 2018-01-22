@@ -6,12 +6,12 @@ monitors all activities' lifecycle.
 
 ### Colors of activity lifecycles-
 
-- ![#00FF00](https://placehold.it/15/00FF00/000000?text=+) onCreate
-- ![#FFFF00](https://placehold.it/15/FFFF00/000000?text=+) onStart
-- ![#FF0000](https://placehold.it/15/FF0000/000000?text=+) onResume
-- ![#FFFFFF](https://placehold.it/15/FFFFFF/000000?text=+) onPause
-- ![#888888](https://placehold.it/15/888888/000000?text=+) onStop
-- ![#000000](https://placehold.it/15/000000/000000?text=+) onDestroy
+- ![#00000000](https://placehold.it/15/00FF00/000000?text=+) onCreate
+- ![#33ff0000](https://placehold.it/15/FFFF00/000000?text=+) onStart
+- ![#ffff0000](https://placehold.it/15/FF0000/000000?text=+) onResume
+- ![#ff000000](https://placehold.it/15/FFFFFF/000000?text=+) onPause
+- ![#33000000](https://placehold.it/15/888888/000000?text=+) onStop
+- ![#00000000](https://placehold.it/15/000000/000000?text=+) onDestroy
 
 ### Use in demo(show different launch mode)
 
@@ -32,7 +32,7 @@ monitors all activities' lifecycle.
 
 ## Usage
 1) add dependence in module's build.gradle
-> compile 'cc.rome753:activitytaskview:0.9.0'
+> compile 'cc.rome753:activitytaskview:1.0.0'
 
 2) add system alert permission in AndroidManifest.xml
 ```

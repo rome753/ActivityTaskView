@@ -31,7 +31,7 @@ dependencies {
 //    testCompile 'junit:junit:4.12'
 }
 
-// ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
+// ./gradlew clean build bintrayUpload -PbintrayUser=rome713bc -PbintrayKey= -PdryRun=false
 publish {
     userOrg = 'rome713bc'
     groupId = 'cc.rome753'
