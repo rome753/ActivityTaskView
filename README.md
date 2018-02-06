@@ -4,31 +4,31 @@ monitors all activities' lifecycle.
 
 ## Introduction
 
-### Colors of activity lifecycles-
+### Colors of lifecycles
 
-- ![#00000000](https://placehold.it/15/00FF00/000000?text=+) onCreate
-- ![#33ff0000](https://placehold.it/15/FFFF00/000000?text=+) onStart
-- ![#ffff0000](https://placehold.it/15/FF0000/000000?text=+) onResume
-- ![#ff000000](https://placehold.it/15/FFFFFF/000000?text=+) onPause
-- ![#33000000](https://placehold.it/15/888888/000000?text=+) onStop
-- ![#00000000](https://placehold.it/15/000000/000000?text=+) onDestroy
+- ![#00000000](https://placehold.it/15/00000000/000000?text=+) onCreate
+- ![#33ff0000](https://placehold.it/15/33ff0000/000000?text=+) onStart
+- ![#ffff0000](https://placehold.it/15/ffff0000/000000?text=+) onResume
+- ![#ff000000](https://placehold.it/15/ff000000/000000?text=+) onPause
+- ![#33000000](https://placehold.it/15/33000000/000000?text=+) onStop
+- ![#00000000](https://placehold.it/15/00000000/000000?text=+) onDestroy
 
 ### Use in demo(show different launch mode)
 
 #### standard mode
-![standard](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/standard.gif)
+![standard.gif](http://upload-images.jianshu.io/upload_images/1896166-210a9a551ffab54c.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 #### singletop mode
-![singletop](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/singletop.gif)
+![singleTop.gif](http://upload-images.jianshu.io/upload_images/1896166-4d6150c0d9a947df.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 #### singletask mode
-![singletask](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/singletask.gif)
+![singleTask.gif](http://upload-images.jianshu.io/upload_images/1896166-49db88012bbc36eb.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 #### singleinstance mode
-![singleinstance](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/singleinstance.gif)
+![singleInstance.gif](http://upload-images.jianshu.io/upload_images/1896166-ecad63efe81f10d8.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 #### dialog style activity
-![dialog](https://github.com/rome753/ActivityTaskView/raw/master/screenshots/dialog.gif)
+![dialogStyle.gif](http://upload-images.jianshu.io/upload_images/1896166-538d3d530f8cd0d6.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Usage
 1) add dependence in module's build.gradle
