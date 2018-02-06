@@ -25,7 +25,7 @@ public class ObserverTextView extends TextView implements Observer{
 
     public ObserverTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setTextSize(10);
+        setTextSize(12);
         setTextColor(Color.WHITE);
         setMaxLines(1);
         setBackgroundColor(Color.parseColor("#33AAAAAA"));

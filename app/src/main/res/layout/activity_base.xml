@@ -7,6 +7,7 @@
     tools:context="cc.rome753.demo.StandardActivity">
 
     <ScrollView
+        android:scrollbars="none"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent">
