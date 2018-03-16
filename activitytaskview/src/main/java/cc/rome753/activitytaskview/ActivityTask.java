@@ -13,10 +13,10 @@ import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 
 import java.util.LinkedList;
-import java.util.Observable;
 import java.util.Queue;
 
 import static android.view.View.GONE;
@@ -30,23 +30,14 @@ public class ActivityTask {
 
     private static final String TAG = ActivityTask.class.getSimpleName();
 
-    private static final long DELAY = 300;
+    static int textSize = 12;
 
-    private static final int[] COLORS = {
-            0x00000000,//onCreate
-            0x33ff0000,//onStart
-            0xffff0000,//onResume
-
-            0xff000000,//onPause
-            0x33000000,//onStop
-            0x00000000//onDestroy
-    };
+    static long interval = 300;
 
     private static ActivityTaskView activityTaskView;
-    private static ActivityLifecycleObservable activityLifecycleObservable;
 
     /**
-     * is current app front
+     * Is current app front. If not, hide the activityTaskView.
      * <p>
      * front: Activity A onPause -> Activity B onResume -> Activity A onStop
      * <p>
@@ -54,10 +45,8 @@ public class ActivityTask {
      */
     private static boolean isFront;
 
-    private static QueueHandler qhandler;
-
     /**
-     * init in your application onCreate()
+     * Init in your application's onCreate()
      *
      * @param app   your application
      * @param debug your app module BuildConfig.DEBUG
@@ -71,17 +60,27 @@ public class ActivityTask {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             app.startActivity(intent);
         } else {
-            addWindow(app);
+            start(app);
         }
     }
 
-    static void addWindow(Application app) {
-        activityLifecycleObservable = new ActivityLifecycleObservable();
+    /**
+     * Set appearance
+     * @param textSize textSize, default 12(sp)
+     * @param interval interval between lifecycle, default 300(ms)
+     */
+    public static void setStyle(int textSize, long interval){
+        ActivityTask.textSize = textSize;
+        ActivityTask.interval = interval;
+    }
+
+    static void start(Application app) {
         activityTaskView = new ActivityTaskView(app);
-        activityTaskView.setObservable(activityLifecycleObservable);
+        addViewToWindow(app, activityTaskView);
+        registerActivityLifecycleCallbacks(app);
+    }
 
-        qhandler = new QueueHandler();
-
+    private static void addViewToWindow(Application app, View view){
         WindowManager windowManager = (WindowManager) app.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
         params.type = WindowManager.LayoutParams.TYPE_PHONE;
@@ -92,123 +91,101 @@ public class ActivityTask {
         params.gravity = Gravity.START | Gravity.TOP;
         params.x = 0;
         params.y = app.getResources().getDisplayMetrics().heightPixels;
-        windowManager.addView(activityTaskView, params);
+        if(windowManager != null) {
+            windowManager.addView(view, params);
+        }
+    }
 
-        app.registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+    private static void registerActivityLifecycleCallbacks(Application app){
+        final QueueHandler queueHandler = new QueueHandler();
+        app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                Log.w(TAG, activity.getClass().getName() + "@" + activity.hashCode() + " " + activity.getTaskId() + " " + " onActivityCreated");
+                queueHandler.add(new TaskInfo(0, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStarted");
+                queueHandler.add(new TaskInfo(1, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                Log.d(TAG, activity.getClass().getSimpleName() + " onActivityResumed");
+                queueHandler.add(new TaskInfo(2, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                activityTaskView.setVisibility(VISIBLE);
+                isFront = true;
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                Log.d(TAG, activity.getClass().getSimpleName() + " onActivityPaused");
+                queueHandler.add(new TaskInfo(3, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                isFront = false;
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStopped");
+                queueHandler.add(new TaskInfo(4, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+                Log.d(TAG, activity.getClass().getSimpleName() + " onActivitySaveInstanceState");
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                Log.w(TAG, activity.getClass().getSimpleName() + " onActivityDestroyed");
+                queueHandler.add(new TaskInfo(5, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+            }
+        });
     }
 
     static class QueueHandler extends Handler{
 
-        private Queue<Object> queue;
+        private Queue<TaskInfo> queue;
         private long lastTime;
 
-        public QueueHandler(){
+        QueueHandler(){
             super(Looper.getMainLooper());
             lastTime = 0;
             queue = new LinkedList<>();
         }
 
-        public void add(Object o){
-            queue.add(o);
+        void add(TaskInfo taskInfo){
+            queue.add(taskInfo);
             sendEmptyMessage(0);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            if(System.currentTimeMillis() - lastTime < DELAY){
-                sendEmptyMessageDelayed(0, DELAY / 5);
+            if(System.currentTimeMillis() - lastTime < interval){
+                sendEmptyMessageDelayed(0, interval / 5);
             }else {
-                Object obj = queue.poll();
-                if(obj instanceof TaskInfo){
-                    TaskInfo taskInfo = (TaskInfo) obj;
-                    if(taskInfo.isOnCreate()){
-                        activityTaskView.add(taskInfo);
-                        activityLifecycleObservable.lifecycleChange(new ColorInfo(COLORS[0], taskInfo.activityId));
-                    }else{
-                        activityTaskView.remove(taskInfo);
-                    }
-                    lastTime = System.currentTimeMillis();
-                }else if(obj instanceof ColorInfo){
-                    activityLifecycleObservable.lifecycleChange((ColorInfo) obj);
-                    lastTime = System.currentTimeMillis();
+                lastTime = System.currentTimeMillis();
+                TaskInfo taskInfo = queue.poll();
+                if(taskInfo != null){
+                    activityTaskView.lifecycleChange(taskInfo);
                 }
             }
         }
     }
 
-    private static Application.ActivityLifecycleCallbacks activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            Log.w(TAG, activity.getClass().getName() + "@" + activity.hashCode() + " " + activity.getTaskId() + " " + " onActivityCreated");
-
-            TaskInfo taskInfo = new TaskInfo(activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName());
-            taskInfo.setOnCreate(true);
-            qhandler.add(taskInfo);
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity) {
-            Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStarted");
-            qhandler.add(new ColorInfo(COLORS[1], activity.hashCode()));
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
-            Log.d(TAG, activity.getClass().getSimpleName() + " onActivityResumed");
-            qhandler.add(new ColorInfo(COLORS[2], activity.hashCode()));
-            activityTaskView.setVisibility(VISIBLE);
-            isFront = true;
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity) {
-            Log.d(TAG, activity.getClass().getSimpleName() + " onActivityPaused");
-            qhandler.add(new ColorInfo(COLORS[3], activity.hashCode()));
-            isFront = false;
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
-            Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStopped");
-            qhandler.add(new ColorInfo(COLORS[4], activity.hashCode()));
-            activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
-
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            Log.d(TAG, activity.getClass().getSimpleName() + " onActivitySaveInstanceState");
-
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            Log.w(TAG, activity.getClass().getSimpleName() + " onActivityDestroyed");
-            qhandler.add(new ColorInfo(COLORS[5], activity.hashCode()));
-            qhandler.add(new TaskInfo(activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
-        }
-    };
-
-    static class ActivityLifecycleObservable extends Observable {
-
-        /**
-         * when activity lifecycle changed, notify the observer
-         *
-         * @param info ColorInfo
-         */
-        void lifecycleChange(ColorInfo info) {
-            setChanged();
-            notifyObservers(info);
-        }
-    }
-
     static class TaskInfo {
+        private int lifecycle;
         private int taskId;
         private int activityId;
         private String activityName;
-        private boolean isOnCreate = false;
 
-        public TaskInfo(int taskId, int activityId, String activityName) {
+        TaskInfo(int lifecycle, int taskId, int activityId, String activityName) {
+            this.lifecycle = lifecycle;
             this.taskId = taskId;
             this.activityId = activityId;
             this.activityName = activityName;
@@ -226,35 +203,13 @@ public class ActivityTask {
             return activityName;
         }
 
-        public boolean isOnCreate() {
-            return isOnCreate;
-        }
-
-        public void setOnCreate(boolean onCreate) {
-            isOnCreate = onCreate;
+        public int getLifecycle() {
+            return lifecycle;
         }
 
         @Override
         public boolean equals(Object obj) {
             return obj instanceof TaskInfo && taskId == ((TaskInfo) obj).getActivityId();
-        }
-    }
-
-    static class ColorInfo{
-        private int color;
-        private int activityId;
-
-        public ColorInfo(int color, int activityId) {
-            this.color = color;
-            this.activityId = activityId;
-        }
-
-        public int getColor() {
-            return color;
-        }
-
-        public int getActivityId() {
-            return activityId;
         }
     }
 

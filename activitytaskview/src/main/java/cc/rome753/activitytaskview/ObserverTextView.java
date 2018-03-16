@@ -15,6 +15,16 @@ import java.util.Observer;
 
 public class ObserverTextView extends TextView implements Observer{
 
+    private static final int[] COLORS = {
+            0x00000000,//onCreate
+            0x33ff0000,//onStart
+            0xffff0000,//onResume
+
+            0xff000000,//onPause
+            0x33000000,//onStop
+            0x00000000//onDestroy
+    };
+
     public ObserverTextView(Context context) {
         this(context, null);
     }
@@ -25,17 +35,17 @@ public class ObserverTextView extends TextView implements Observer{
 
     public ObserverTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setTextSize(12);
-        setTextColor(Color.WHITE);
+        setTextSize(ActivityTask.textSize);
+        setTextColor(COLORS[0]);
         setMaxLines(1);
         setBackgroundColor(Color.parseColor("#33AAAAAA"));
     }
 
     @Override
     public void update(Observable o, Object arg){
-        ActivityTask.ColorInfo info = (ActivityTask.ColorInfo) arg;
+        ActivityTask.TaskInfo info = (ActivityTask.TaskInfo) arg;
         if(info.getActivityId() == (int)getTag()) {
-            setTextColor(info.getColor());
+            setTextColor(COLORS[info.getLifecycle()]);
         }
     }
 

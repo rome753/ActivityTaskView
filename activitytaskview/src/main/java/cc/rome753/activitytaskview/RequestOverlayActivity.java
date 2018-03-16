@@ -9,7 +9,7 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 /**
- * request overlay window permission
+ * Request overlay window permission
  */
 public class RequestOverlayActivity extends Activity {
 
@@ -25,9 +25,9 @@ public class RequestOverlayActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && Settings.canDrawOverlays(this)) {
-            ActivityTask.addWindow(getApplication());
+            ActivityTask.start(getApplication());
         }else{
-            Toast.makeText(getApplicationContext(), "window permission denied, cannot show activity task", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Window permission denied, cannot show activity task", Toast.LENGTH_SHORT).show();
         }
         finish();
     }

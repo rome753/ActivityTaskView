@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import java.util.HashMap;
+import java.util.Observable;
 import java.util.TreeMap;
 
 /**
@@ -24,7 +25,7 @@ public class ActivityTaskView extends LinearLayout {
 
     HashMap<Integer, ObserverTextView> mObserverTextViewMap;
 
-    private ActivityTask.ActivityLifecycleObservable mObservable;
+    private ActivityLifecycleObservable mObservable;
 
     private int mStatusHeight;
 
@@ -41,21 +42,17 @@ public class ActivityTaskView extends LinearLayout {
         setOrientation(HORIZONTAL);
         setGravity(Gravity.BOTTOM);
         setBackgroundColor(Color.parseColor("#33EEEEEE"));
+        mObservable = new ActivityLifecycleObservable();
         mLayoutMap = new TreeMap<>();
         mObserverTextViewMap = new HashMap<>();
 
         mStatusHeight = getStatusBarHeight();
     }
 
-    public void setObservable(ActivityTask.ActivityLifecycleObservable observable) {
-        mObservable = observable;
-    }
-
     public void add(ActivityTask.TaskInfo taskInfo) {
         int activityId = taskInfo.getActivityId();
         int taskId = taskInfo.getTaskId();
         ObserverTextView textView = createObserverTextView(activityId, taskInfo.getActivityName());
-        mObservable.addObserver(textView);
         mObserverTextViewMap.put(activityId, textView);
         LinearLayout layout = mLayoutMap.get(taskId);
         if (layout == null) {
@@ -70,8 +67,9 @@ public class ActivityTaskView extends LinearLayout {
         }
         layout.addView(textView, 0);
         LinearLayout.LayoutParams params = (LayoutParams) textView.getLayoutParams();
-        params.bottomMargin = 1;
+        params.setMargins(5,1,5,1);
         textView.setLayoutParams(params);
+        mObservable.addObserver(textView);
         Log.i(TAG, "addObserverTextView " + taskId);
     }
 
@@ -87,13 +85,27 @@ public class ActivityTaskView extends LinearLayout {
             Log.e(TAG, "ObserverTextView not found");
             return;
         }
-        mObservable.deleteObserver(textView);
         layout.removeView(textView);
         Log.i(TAG, "removeObserverTextView " + taskId);
         if (layout.getChildCount() == 0) {
             mLayoutMap.remove(taskId);
             removeView(layout);
             Log.i(TAG, "removeLinearLayout " + taskId);
+        }
+        mObservable.deleteObserver(textView);
+    }
+
+    public void lifecycleChange(ActivityTask.TaskInfo taskInfo){
+        switch (taskInfo.getLifecycle()){
+            case 0:
+                add(taskInfo);
+                break;
+            case 5:
+                remove(taskInfo);
+                break;
+            default:
+                mObservable.lifecycleChange(taskInfo);
+                break;
         }
     }
 
@@ -127,7 +139,10 @@ public class ActivityTaskView extends LinearLayout {
                 WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
                 params.x = (int) (x - mInnerX);
                 params.y = (int) (y - mInnerY - mStatusHeight);
-                ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).updateViewLayout(this, params);
+                WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+                if(windowManager != null) {
+                    windowManager.updateViewLayout(this, params);
+                }
                 break;
         }
         return true;
@@ -140,5 +155,13 @@ public class ActivityTaskView extends LinearLayout {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    static class ActivityLifecycleObservable extends Observable {
+
+        void lifecycleChange(ActivityTask.TaskInfo info) {
+            setChanged();
+            notifyObservers(info);
+        }
     }
 }
