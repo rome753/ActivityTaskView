@@ -1,7 +1,6 @@
 package cc.rome753.activitytaskview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -38,7 +37,6 @@ public class ObserverTextView extends TextView implements Observer{
         setTextSize(ActivityTask.textSize);
         setTextColor(COLORS[0]);
         setMaxLines(1);
-        setBackgroundColor(Color.parseColor("#33AAAAAA"));
     }
 
     @Override

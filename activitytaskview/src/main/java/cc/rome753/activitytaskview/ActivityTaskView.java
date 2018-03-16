@@ -1,11 +1,10 @@
 package cc.rome753.activitytaskview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
@@ -20,10 +19,10 @@ import java.util.TreeMap;
 public class ActivityTaskView extends LinearLayout {
 
     public static final String TAG = ActivityTaskView.class.getSimpleName();
-
-    TreeMap<Integer, LinearLayout> mLayoutMap;
-
-    HashMap<Integer, ObserverTextView> mObserverTextViewMap;
+    private LinearLayout mLinearLayout;
+    private View mTinyView;
+    private TreeMap<Integer, LinearLayout> mLayoutMap;
+    private HashMap<Integer, ObserverTextView> mObserverTextViewMap;
 
     private ActivityLifecycleObservable mObservable;
 
@@ -39,14 +38,16 @@ public class ActivityTaskView extends LinearLayout {
 
     public ActivityTaskView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setOrientation(HORIZONTAL);
-        setGravity(Gravity.BOTTOM);
-        setBackgroundColor(Color.parseColor("#33EEEEEE"));
+        inflate(context, R.layout.view_activity_task, this);
+        mLinearLayout = (LinearLayout) findViewById(R.id.ll);
+        mTinyView = findViewById(R.id.tiny_view);
         mObservable = new ActivityLifecycleObservable();
         mLayoutMap = new TreeMap<>();
         mObserverTextViewMap = new HashMap<>();
 
         mStatusHeight = getStatusBarHeight();
+
+        showTinyOrNot();
     }
 
     public void add(ActivityTask.TaskInfo taskInfo) {
@@ -58,7 +59,7 @@ public class ActivityTaskView extends LinearLayout {
         if (layout == null) {
             layout = createLinearLayout();
             mLayoutMap.put(taskId, layout);
-            addView(layout);
+            mLinearLayout.addView(layout);
             LinearLayout.LayoutParams params = (LayoutParams) layout.getLayoutParams();
             params.leftMargin = 2;
             layout.setLayoutParams(params);
@@ -67,7 +68,6 @@ public class ActivityTaskView extends LinearLayout {
         }
         layout.addView(textView, 0);
         LinearLayout.LayoutParams params = (LayoutParams) textView.getLayoutParams();
-        params.setMargins(5,1,5,1);
         textView.setLayoutParams(params);
         mObservable.addObserver(textView);
         Log.i(TAG, "addObserverTextView " + taskId);
@@ -89,7 +89,7 @@ public class ActivityTaskView extends LinearLayout {
         Log.i(TAG, "removeObserverTextView " + taskId);
         if (layout.getChildCount() == 0) {
             mLayoutMap.remove(taskId);
-            removeView(layout);
+            mLinearLayout.removeView(layout);
             Log.i(TAG, "removeLinearLayout " + taskId);
         }
         mObservable.deleteObserver(textView);
@@ -112,7 +112,8 @@ public class ActivityTaskView extends LinearLayout {
     private LinearLayout createLinearLayout() {
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(VERTICAL);
-        layout.setBackgroundColor(Color.parseColor("#33CCCCCC"));
+        layout.setBackgroundResource(R.drawable.bg_rect_inner);
+        layout.setPadding(10,0,10,0);
         return layout;
     }
 
@@ -144,8 +145,23 @@ public class ActivityTaskView extends LinearLayout {
                     windowManager.updateViewLayout(this, params);
                 }
                 break;
+            case MotionEvent.ACTION_UP:
+                showTinyOrNot();
+                break;
+
         }
         return true;
+    }
+
+    private void showTinyOrNot() {
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) getLayoutParams();
+        if(p == null || p.x < 10){
+            mTinyView.setVisibility(VISIBLE);
+            mLinearLayout.setVisibility(GONE);
+        }else{
+            mTinyView.setVisibility(GONE);
+            mLinearLayout.setVisibility(VISIBLE);
+        }
     }
 
     public int getStatusBarHeight() {
