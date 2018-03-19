@@ -14,7 +14,7 @@ public class DemoApplication extends Application{
     public void onCreate() {
         super.onCreate();
         ActivityTask.init(this, BuildConfig.DEBUG);
-        ActivityTask.setStyle(13, 100);
+        ActivityTask.setStyle(13, 100, false);
     }
 
 }

@@ -34,6 +34,8 @@ public class ActivityTask {
 
     static long interval = 300;
 
+    private static boolean autoHide = true;
+
     private static ActivityTaskView activityTaskView;
 
     /**
@@ -68,10 +70,12 @@ public class ActivityTask {
      * Set appearance
      * @param textSize textSize, default 12(sp)
      * @param interval interval between lifecycle, default 300(ms)
+     * @param autoHide auto hide when app is not in foreground, default true
      */
-    public static void setStyle(int textSize, long interval){
+    public static void setStyle(int textSize, long interval, boolean autoHide){
         ActivityTask.textSize = textSize;
         ActivityTask.interval = interval;
+        ActivityTask.autoHide = autoHide;
     }
 
     static void start(Application app) {
@@ -116,8 +120,10 @@ public class ActivityTask {
             public void onActivityResumed(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityResumed");
                 queueHandler.add(new TaskInfo(2, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
-                activityTaskView.setVisibility(VISIBLE);
-                isFront = true;
+                if(autoHide) {
+                    activityTaskView.setVisibility(VISIBLE);
+                    isFront = true;
+                }
             }
 
             @Override
@@ -131,7 +137,9 @@ public class ActivityTask {
             public void onActivityStopped(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStopped");
                 queueHandler.add(new TaskInfo(4, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
-                activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
+                if(autoHide){
+                    activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
+                }
 
             }
 
