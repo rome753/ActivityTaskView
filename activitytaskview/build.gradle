@@ -17,7 +17,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         versionCode 5
-        versionName "2.0.1"
+        versionName "2.0.5"
 
     }
 
@@ -32,7 +32,7 @@ publish {
     userOrg = 'rome713bc'
     groupId = 'cc.rome753'
     artifactId = 'activitytaskview'
-    publishVersion = '2.0.1'
+    publishVersion = '2.0.5'
     desc = 'set auto hide or not'
     website = 'https://github.com/rome753/activitytaskview'
 }

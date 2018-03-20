@@ -46,8 +46,6 @@ public class ActivityTaskView extends LinearLayout {
         mObserverTextViewMap = new HashMap<>();
 
         mStatusHeight = getStatusBarHeight();
-
-        showTinyOrNot();
     }
 
     public void add(ActivityTask.TaskInfo taskInfo) {
@@ -92,6 +90,7 @@ public class ActivityTaskView extends LinearLayout {
             mLinearLayout.removeView(layout);
             Log.i(TAG, "removeLinearLayout " + taskId);
         }
+        showTinyOrNot();
         mObservable.deleteObserver(textView);
     }
 
@@ -140,10 +139,7 @@ public class ActivityTaskView extends LinearLayout {
                 WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
                 params.x = (int) (x - mInnerX);
                 params.y = (int) (y - mInnerY - mStatusHeight);
-                WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-                if(windowManager != null) {
-                    windowManager.updateViewLayout(this, params);
-                }
+                updateLayout(params);
                 break;
             case MotionEvent.ACTION_UP:
                 showTinyOrNot();
@@ -153,11 +149,20 @@ public class ActivityTaskView extends LinearLayout {
         return true;
     }
 
+    private void updateLayout(WindowManager.LayoutParams params){
+        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        if(windowManager != null) {
+            windowManager.updateViewLayout(this, params);
+        }
+    }
+
     private void showTinyOrNot() {
         WindowManager.LayoutParams p = (WindowManager.LayoutParams) getLayoutParams();
-        if(p == null || p.x < 10){
+        if(p.x < 5 || mLinearLayout.getChildCount() == 0){
             mTinyView.setVisibility(VISIBLE);
             mLinearLayout.setVisibility(GONE);
+            p.x = 0;
+            updateLayout(p);
         }else{
             mTinyView.setVisibility(GONE);
             mLinearLayout.setVisibility(VISIBLE);
