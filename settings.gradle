@@ -1,1 +1,1 @@
-include ':app', ':activitytaskview'
+include ':app', ':activitytaskview', ':singleinstancedemo'
