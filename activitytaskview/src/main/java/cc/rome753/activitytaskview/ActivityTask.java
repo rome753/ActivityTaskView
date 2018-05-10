@@ -107,19 +107,19 @@ public class ActivityTask {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.w(TAG, activity.getClass().getName() + "@" + activity.hashCode() + " " + activity.getTaskId() + " " + " onActivityCreated");
-                queueHandler.add(new TaskInfo(0, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(0, activity.getTaskId(), AUtils.getSimpleName(activity)));
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStarted");
-                queueHandler.add(new TaskInfo(1, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(1, activity.getTaskId(), AUtils.getSimpleName(activity)));
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityResumed");
-                queueHandler.add(new TaskInfo(2, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(2, activity.getTaskId(), AUtils.getSimpleName(activity)));
                 if(autoHide) {
                     activityTaskView.setVisibility(VISIBLE);
                     isFront = true;
@@ -129,14 +129,14 @@ public class ActivityTask {
             @Override
             public void onActivityPaused(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityPaused");
-                queueHandler.add(new TaskInfo(3, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(3, activity.getTaskId(), AUtils.getSimpleName(activity)));
                 isFront = false;
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStopped");
-                queueHandler.add(new TaskInfo(4, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(4, activity.getTaskId(), AUtils.getSimpleName(activity)));
                 if(autoHide){
                     activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
                 }
@@ -151,7 +151,7 @@ public class ActivityTask {
             @Override
             public void onActivityDestroyed(Activity activity) {
                 Log.w(TAG, activity.getClass().getSimpleName() + " onActivityDestroyed");
-                queueHandler.add(new TaskInfo(5, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(5, activity.getTaskId(), AUtils.getSimpleName(activity)));
             }
         });
     }
@@ -189,26 +189,20 @@ public class ActivityTask {
     static class TaskInfo {
         private int lifecycle;
         private int taskId;
-        private int activityId;
-        private String activityName;
+        private String name;
 
-        TaskInfo(int lifecycle, int taskId, int activityId, String activityName) {
+        TaskInfo(int lifecycle, int taskId, String name) {
             this.lifecycle = lifecycle;
             this.taskId = taskId;
-            this.activityId = activityId;
-            this.activityName = activityName;
+            this.name = name;
         }
 
         public int getTaskId() {
             return taskId;
         }
 
-        public int getActivityId() {
-            return activityId;
-        }
-
-        public String getActivityName() {
-            return activityName;
+        public String getName() {
+            return name;
         }
 
         public int getLifecycle() {
@@ -217,7 +211,7 @@ public class ActivityTask {
 
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof TaskInfo && taskId == ((TaskInfo) obj).getActivityId();
+            return obj instanceof TaskInfo && name.equals(((TaskInfo) obj).getName());
         }
     }
 

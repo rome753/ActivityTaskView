@@ -42,7 +42,7 @@ public class ObserverTextView extends TextView implements Observer{
     @Override
     public void update(Observable o, Object arg){
         ActivityTask.TaskInfo info = (ActivityTask.TaskInfo) arg;
-        if(info.getActivityId() == (int)getTag()) {
+        if(info.getName().equals(getText().toString())) {
             setTextColor(COLORS[info.getLifecycle()]);
         }
     }
