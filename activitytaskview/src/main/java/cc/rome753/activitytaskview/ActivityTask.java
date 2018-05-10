@@ -11,10 +11,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -108,6 +112,7 @@ public class ActivityTask {
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.w(TAG, activity.getClass().getName() + "@" + activity.hashCode() + " " + activity.getTaskId() + " " + " onActivityCreated");
                 queueHandler.add(new TaskInfo(0, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                registerFragmentLifecycleCallbacks(activity);
             }
 
             @Override
@@ -154,6 +159,82 @@ public class ActivityTask {
                 queueHandler.add(new TaskInfo(5, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
             }
         });
+    }
+    
+    private static String getShortName(Object obj){
+        return obj.getClass().getSimpleName() + "@" + Integer.toHexString(obj.hashCode());
+    }
+
+    public static void registerFragmentLifecycleCallbacks(Activity activity){
+        if(activity instanceof FragmentActivity){
+            ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+                @Override
+                public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentStarted(FragmentManager fm, Fragment f) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentResumed(FragmentManager fm, Fragment f) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentPaused(FragmentManager fm, Fragment f) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentStopped(FragmentManager fm, Fragment f) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+                @Override
+                public void onFragmentDetached(FragmentManager fm, Fragment f) {
+                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                }
+
+            }, true);
+        }
     }
 
     static class QueueHandler extends Handler{

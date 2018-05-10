@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-
 buildscript {
     repositories {
         jcenter()
@@ -9,7 +8,6 @@ buildscript {
         classpath 'com.novoda:bintray-release:0.5.0'
     }
 }
-
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -26,7 +24,6 @@ android {
     }
 
 }
-
 // ./gradlew clean build bintrayUpload -PbintrayUser=rome713bc -PbintrayKey= -PdryRun=false
 publish {
     userOrg = 'rome713bc'
@@ -35,4 +32,7 @@ publish {
     publishVersion = '2.0.5'
     desc = 'set auto hide or not'
     website = 'https://github.com/rome753/activitytaskview'
+}
+dependencies {
+    compile 'com.android.support:appcompat-v7:25.2.0'
 }
