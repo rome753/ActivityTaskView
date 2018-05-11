@@ -1,4 +1,4 @@
-package cc.rome753.activitytaskview;
+package cc.rome753.activitytask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

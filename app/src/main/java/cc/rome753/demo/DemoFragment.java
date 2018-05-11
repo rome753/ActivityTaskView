@@ -1,4 +1,4 @@
-package cc.rome753.singleinstancedemo;
+package cc.rome753.demo;
 
 
 import android.os.Bundle;

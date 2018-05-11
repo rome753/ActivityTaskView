@@ -11,10 +11,24 @@
         android:layout_height="24dp" />
 
     <LinearLayout
-        android:id="@+id/ll"
+        android:id="@+id/task_view"
+        android:orientation="vertical"
         android:visibility="gone"
-        android:orientation="horizontal"
-        android:gravity="bottom"
+        android:background="@android:color/white"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <cc.rome753.activitytask.FragmentListView
+            android:id="@+id/flv"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content">
+        </cc.rome753.activitytask.FragmentListView>
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:orientation="horizontal"
+            android:gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </FrameLayout>

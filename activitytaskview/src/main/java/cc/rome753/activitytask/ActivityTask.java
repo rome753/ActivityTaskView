@@ -1,4 +1,4 @@
-package cc.rome753.activitytaskview;
+package cc.rome753.activitytask;
 
 import android.app.Activity;
 import android.app.Application;
@@ -24,6 +24,7 @@ import java.util.Queue;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static cc.rome753.activitytask.AUtils.getSimpleName;
 
 /**
  * Created by rome753@163.com on 2017/4/16.
@@ -33,13 +34,9 @@ public class ActivityTask {
 
     private static final String TAG = ActivityTask.class.getSimpleName();
 
-    static int textSize = 12;
-
-    static long interval = 300;
-
-    private static boolean autoHide = true;
-
     private static ActivityTaskView activityTaskView;
+    private static boolean autoHide = true;
+    private static long interval = 300;
 
     /**
      * Is current app front. If not, hide the activityTaskView.
@@ -49,6 +46,30 @@ public class ActivityTask {
      * not front: Activity A onPause -> Activity A onStop
      */
     private static boolean isFront;
+
+    /**
+     * auto hide when app is not in foreground, default true
+     * @param autoHide
+     */
+    public static void setAutoHide(boolean autoHide) {
+        ActivityTask.autoHide = autoHide;
+    }
+
+    /**
+     * interval between lifecycle, default 300(ms)
+     * @param interval
+     */
+    public static void setInterval(long interval) {
+        ActivityTask.interval = interval;
+    }
+
+    public static boolean isAutoHide() {
+        return autoHide;
+    }
+
+    public static long getInterval() {
+        return interval;
+    }
 
     /**
      * Init in your application's onCreate()
@@ -67,18 +88,6 @@ public class ActivityTask {
         } else {
             start(app);
         }
-    }
-
-    /**
-     * Set appearance
-     * @param textSize textSize, default 12(sp)
-     * @param interval interval between lifecycle, default 300(ms)
-     * @param autoHide auto hide when app is not in foreground, default true
-     */
-    public static void setStyle(int textSize, long interval, boolean autoHide){
-        ActivityTask.textSize = textSize;
-        ActivityTask.interval = interval;
-        ActivityTask.autoHide = autoHide;
     }
 
     static void start(Application app) {
@@ -110,21 +119,21 @@ public class ActivityTask {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.w(TAG, activity.getClass().getName() + "@" + activity.hashCode() + " " + activity.getTaskId() + " " + " onActivityCreated");
-                queueHandler.add(new TaskInfo(0, activity.getTaskId(), AUtils.getSimpleName(activity)));
-                registerFragmentLifecycleCallbacks(activity);
+                queueHandler.add(new ATaskInfo(0, String.valueOf(activity.getTaskId()), getSimpleName(activity)));
+                registerFragmentLifecycleCallbacks(activity, queueHandler);
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStarted");
-                queueHandler.add(new TaskInfo(1, activity.getTaskId(), AUtils.getSimpleName(activity)));
+                queueHandler.add(new ATaskInfo(1, String.valueOf(activity.getTaskId()), getSimpleName(activity)));
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityResumed");
-                queueHandler.add(new TaskInfo(2, activity.getTaskId(), AUtils.getSimpleName(activity)));
-                if(autoHide) {
+                queueHandler.add(new ATaskInfo(2, String.valueOf(activity.getTaskId()), getSimpleName(activity)));
+                if(isAutoHide()) {
                     activityTaskView.setVisibility(VISIBLE);
                     isFront = true;
                 }
@@ -133,15 +142,15 @@ public class ActivityTask {
             @Override
             public void onActivityPaused(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityPaused");
-                queueHandler.add(new TaskInfo(3, activity.getTaskId(), AUtils.getSimpleName(activity)));
+                queueHandler.add(new ATaskInfo(3, String.valueOf(activity.getTaskId()), getSimpleName(activity)));
                 isFront = false;
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStopped");
-                queueHandler.add(new TaskInfo(4, activity.getTaskId(), AUtils.getSimpleName(activity)));
-                if(autoHide){
+                queueHandler.add(new ATaskInfo(4, String.valueOf(activity.getTaskId()), getSimpleName(activity)));
+                if(isAutoHide()){
                     activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
                 }
 
@@ -155,86 +164,93 @@ public class ActivityTask {
             @Override
             public void onActivityDestroyed(Activity activity) {
                 Log.w(TAG, activity.getClass().getSimpleName() + " onActivityDestroyed");
-                queueHandler.add(new TaskInfo(5, activity.getTaskId(), AUtils.getSimpleName(activity)));
+                queueHandler.add(new ATaskInfo(5, String.valueOf(activity.getTaskId()), getSimpleName(activity)));
             }
         });
     }
 
-    public static void registerFragmentLifecycleCallbacks(Activity activity){
+    private static void registerFragmentLifecycleCallbacks(Activity activity, final QueueHandler queueHandler){
         if(activity instanceof FragmentActivity){
             ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
                 @Override
                 public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(context) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    queueHandler.add(new ATaskInfo(0, getSimpleName(f.getActivity()), getSimpleName(f)));
+
                 }
 
                 @Override
                 public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentStarted(FragmentManager fm, Fragment f) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    queueHandler.add(new ATaskInfo(1, getSimpleName(f.getActivity()), getSimpleName(f)));
                 }
 
                 @Override
                 public void onFragmentResumed(FragmentManager fm, Fragment f) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    queueHandler.add(new ATaskInfo(2, getSimpleName(f.getActivity()), getSimpleName(f)));
                 }
 
                 @Override
                 public void onFragmentPaused(FragmentManager fm, Fragment f) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    queueHandler.add(new ATaskInfo(3, getSimpleName(f.getActivity()), getSimpleName(f)));
                 }
 
                 @Override
                 public void onFragmentStopped(FragmentManager fm, Fragment f) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    queueHandler.add(new ATaskInfo(4, getSimpleName(f.getActivity()), getSimpleName(f)));
                 }
 
                 @Override
                 public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    queueHandler.add(new ATaskInfo(5, getSimpleName(f.getActivity()), getSimpleName(f)));
                 }
 
                 @Override
                 public void onFragmentDetached(FragmentManager fm, Fragment f) {
-                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
             }, true);
         }
     }
 
-    static class QueueHandler extends Handler{
+    private static class QueueHandler extends Handler{
 
-        private Queue<TaskInfo> queue;
+        private Queue<ATaskInfo> queue;
         private long lastTime;
 
         QueueHandler(){
@@ -243,51 +259,26 @@ public class ActivityTask {
             queue = new LinkedList<>();
         }
 
-        void add(TaskInfo taskInfo){
+        void add(ATaskInfo taskInfo){
             queue.add(taskInfo);
             sendEmptyMessage(0);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            if(System.currentTimeMillis() - lastTime < interval){
-                sendEmptyMessageDelayed(0, interval / 5);
+            if(System.currentTimeMillis() - lastTime < getInterval()){
+                sendEmptyMessageDelayed(0, getInterval() / 5);
             }else {
                 lastTime = System.currentTimeMillis();
-                TaskInfo taskInfo = queue.poll();
+                ATaskInfo taskInfo = queue.poll();
                 if(taskInfo != null){
-                    activityTaskView.lifecycleChange(taskInfo);
+                    if(taskInfo.isActivityLifecycle()) {
+                        activityTaskView.onActivityChange(taskInfo);
+                    } else {
+                        activityTaskView.onFragmentChange(taskInfo);
+                    }
                 }
             }
-        }
-    }
-
-    static class TaskInfo {
-        private int lifecycle;
-        private int taskId;
-        private String name;
-
-        TaskInfo(int lifecycle, int taskId, String name) {
-            this.lifecycle = lifecycle;
-            this.taskId = taskId;
-            this.name = name;
-        }
-
-        public int getTaskId() {
-            return taskId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getLifecycle() {
-            return lifecycle;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return obj instanceof TaskInfo && name.equals(((TaskInfo) obj).getName());
         }
     }
 
