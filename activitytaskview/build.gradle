@@ -1,13 +1,25 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.novoda.bintray-release'
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-//        classpath 'com.novoda:bintray-release:0.4.0'
+        classpath 'com.novoda:bintray-release:0.8.1'
     }
 }
+
+// ./gradlew clean build bintrayUpload -PbintrayUser=rome713bc -PbintrayKey= -PdryRun=false
+
+publish {
+    userOrg = 'rome713bc'
+    groupId = 'cc.rome753'
+    artifactId = 'activitytaskview'
+    publishVersion = '3.0.0'
+    desc = 'Add fragment lifecycle support'
+    website = 'https://github.com/rome753/activitytaskview'
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "26.0.2"
@@ -24,15 +36,7 @@ android {
     }
 
 }
-// ./gradlew clean build bintrayUpload -PbintrayUser=rome713bc -PbintrayKey= -PdryRun=false
-//publish {
-//    userOrg = 'rome713bc'
-//    groupId = 'cc.rome753'
-//    artifactId = 'activitytaskview'
-//    publishVersion = '3.0.0'
-//    desc = 'Add fragment lifecycle support'
-//    website = 'https://github.com/rome753/activitytaskview'
-//}
+
 dependencies {
     implementation 'com.android.support:appcompat-v7:25.2.0'
 }

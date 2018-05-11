@@ -19,14 +19,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void openBaidu(View v){
         String url = "http://m.baidu.com/";
-        Intent intent = new Intent(this, DemoActivity.class);
+        Intent intent = new Intent(this, BrowserActivity.class);
         intent.putExtra("url", url);
         startActivity(intent);
     }
 
     public void openYouku(View v){
         String url = "http://m.youku.com/";
-        Intent intent = new Intent(this, DemoActivity.class);
+        Intent intent = new Intent(this, BrowserActivity.class);
         intent.putExtra("url", url);
         startActivity(intent);
     }

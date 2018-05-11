@@ -24,8 +24,8 @@
         </activity>
         <activity
             android:name=".BrowserActivity"
-            android:launchMode="singleInstance"></activity>
-        <activity android:name=".DemoActivity"></activity>
+            android:launchMode="singleInstance">
+        </activity>
     </application>
 
 </manifest>
