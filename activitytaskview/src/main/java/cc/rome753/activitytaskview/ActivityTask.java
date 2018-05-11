@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -111,20 +110,20 @@ public class ActivityTask {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.w(TAG, activity.getClass().getName() + "@" + activity.hashCode() + " " + activity.getTaskId() + " " + " onActivityCreated");
-                queueHandler.add(new TaskInfo(0, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(0, activity.getTaskId(), AUtils.getSimpleName(activity)));
                 registerFragmentLifecycleCallbacks(activity);
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStarted");
-                queueHandler.add(new TaskInfo(1, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(1, activity.getTaskId(), AUtils.getSimpleName(activity)));
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityResumed");
-                queueHandler.add(new TaskInfo(2, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(2, activity.getTaskId(), AUtils.getSimpleName(activity)));
                 if(autoHide) {
                     activityTaskView.setVisibility(VISIBLE);
                     isFront = true;
@@ -134,14 +133,14 @@ public class ActivityTask {
             @Override
             public void onActivityPaused(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityPaused");
-                queueHandler.add(new TaskInfo(3, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(3, activity.getTaskId(), AUtils.getSimpleName(activity)));
                 isFront = false;
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
                 Log.d(TAG, activity.getClass().getSimpleName() + " onActivityStopped");
-                queueHandler.add(new TaskInfo(4, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(4, activity.getTaskId(), AUtils.getSimpleName(activity)));
                 if(autoHide){
                     activityTaskView.setVisibility(isFront ? VISIBLE : GONE);
                 }
@@ -156,13 +155,9 @@ public class ActivityTask {
             @Override
             public void onActivityDestroyed(Activity activity) {
                 Log.w(TAG, activity.getClass().getSimpleName() + " onActivityDestroyed");
-                queueHandler.add(new TaskInfo(5, activity.getTaskId(), activity.hashCode(), activity.getClass().getSimpleName()));
+                queueHandler.add(new TaskInfo(5, activity.getTaskId(), AUtils.getSimpleName(activity)));
             }
         });
-    }
-    
-    private static String getShortName(Object obj){
-        return obj.getClass().getSimpleName() + "@" + Integer.toHexString(obj.hashCode());
     }
 
     public static void registerFragmentLifecycleCallbacks(Activity activity){
@@ -170,67 +165,67 @@ public class ActivityTask {
             ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
                 @Override
                 public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentStarted(FragmentManager fm, Fragment f) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentResumed(FragmentManager fm, Fragment f) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentPaused(FragmentManager fm, Fragment f) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentStopped(FragmentManager fm, Fragment f) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
                 @Override
                 public void onFragmentDetached(FragmentManager fm, Fragment f) {
-                    Log.e("chao", getShortName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
+                    Log.e("chao", AUtils.getSimpleName(f) + ": " + Thread.currentThread().getStackTrace()[2].getMethodName());
                 }
 
             }, true);
@@ -270,26 +265,20 @@ public class ActivityTask {
     static class TaskInfo {
         private int lifecycle;
         private int taskId;
-        private int activityId;
-        private String activityName;
+        private String name;
 
-        TaskInfo(int lifecycle, int taskId, int activityId, String activityName) {
+        TaskInfo(int lifecycle, int taskId, String name) {
             this.lifecycle = lifecycle;
             this.taskId = taskId;
-            this.activityId = activityId;
-            this.activityName = activityName;
+            this.name = name;
         }
 
         public int getTaskId() {
             return taskId;
         }
 
-        public int getActivityId() {
-            return activityId;
-        }
-
-        public String getActivityName() {
-            return activityName;
+        public String getName() {
+            return name;
         }
 
         public int getLifecycle() {
@@ -298,7 +287,7 @@ public class ActivityTask {
 
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof TaskInfo && taskId == ((TaskInfo) obj).getActivityId();
+            return obj instanceof TaskInfo && name.equals(((TaskInfo) obj).getName());
         }
     }
 
