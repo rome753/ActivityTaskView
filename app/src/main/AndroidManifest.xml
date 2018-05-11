@@ -30,6 +30,7 @@
         <activity
             android:name=".SingleInstanceActivity"
             android:launchMode="singleInstance" />
+        <activity android:name=".DemoFragmentActivity" />
     </application>
 
 </manifest>

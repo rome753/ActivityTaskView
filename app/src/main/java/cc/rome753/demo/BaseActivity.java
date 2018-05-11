@@ -111,6 +111,12 @@ public abstract class BaseActivity extends AppCompatActivity{
         }
     }
 
+    public void startFragmentActivity(View v){
+        Intent intent = new Intent(this, DemoFragmentActivity.class);
+        addFlags(intent);
+        startActivity(intent);
+    }
+
     public void startDialogActivity(View v){
         Intent intent = new Intent(this, DialogActivity.class);
         addFlags(intent);

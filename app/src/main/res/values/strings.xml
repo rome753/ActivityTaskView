@@ -5,4 +5,5 @@
     <string name="start_singletask_activity">start singleTask</string>
     <string name="start_singleinstance_activity">start singleInstance</string>
     <string name="start_dialog_activity">start dialog</string>
+    <string name="start_fragment_activity">start fragment activity</string>
 </resources>
