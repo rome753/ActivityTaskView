@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DemoFragmentActivity extends AppCompatActivity {
 
-    List<DemoFragment> fragmentList = new ArrayList<>();
+    List<Fragment> fragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,8 @@ public class DemoFragmentActivity extends AppCompatActivity {
 //        replaceCleanFragment(R.id.content, DemoFragment.newInstance("", ""));
 
 
-        for(int i = 0; i < 6; i++){
+        fragmentList.add(PagerFragment.newInstance());
+        for(int i = 0; i < 3; i++){
             fragmentList.add(DemoFragment.newInstance("", ""));
         }
         ViewPager vp = (ViewPager) findViewById(R.id.vp);

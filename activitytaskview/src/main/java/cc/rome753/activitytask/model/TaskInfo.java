@@ -1,11 +1,14 @@
-package cc.rome753.activitytask;
+package cc.rome753.activitytask.model;
 
-public class ATaskInfo {
-    private int life;
-    private String parent;
-    private String name;
+/**
+ * Created by rome753 on 2017/3/31.
+ */
+public class TaskInfo {
+    protected int life;
+    protected String parent;
+    protected String name;
 
-    public ATaskInfo(int life, String parent, String name) {
+    public TaskInfo(int life, String parent, String name) {
         this.life = life;
         this.parent = parent;
         this.name = name;
@@ -29,6 +32,6 @@ public class ATaskInfo {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof ATaskInfo && name.equals(((ATaskInfo) obj).getName());
+        return obj instanceof TaskInfo && name.equals(((TaskInfo) obj).getName());
     }
 }

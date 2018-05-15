@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 
 /**
- * Created by Administrator on 2018/5/10.
+ * Created by rome753 on 2018/5/10.
  */
 
 public class AUtils {
@@ -18,6 +18,7 @@ public class AUtils {
             0x33000000,//onStop
             0x00000000//onDestroy
     };
+
     public static int dp2px(float dpValue) {
         return (int) (0.5f + dpValue * Resources.getSystem().getDisplayMetrics().density);
     }
