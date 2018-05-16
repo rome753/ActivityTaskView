@@ -11,10 +11,18 @@ import java.util.Map;
  */
 public class STree {
 
+    private String tab1, tab2, tab3;
+
     private STNode root;
 
     public STree() {
         root = new STNode("");
+    }
+
+    public void setTabs(String tab1, String tab2, String tab3){
+        this.tab1 = tab1;
+        this.tab2 = tab2;
+        this.tab3 = tab3;
     }
 
     public void add(LinkedList<String> list) {
@@ -49,16 +57,15 @@ public class STree {
 
     private void convert(List<String> res, STNode node, String pre, boolean end){
         if(node != root){
-            StringBuilder sb = new StringBuilder(pre);
-            sb.append(end  ? "└─" : "├─");
-            sb.append(node.name);
-            res.add(sb.toString());
+            String s = pre + (end ? tab2 : tab3) +
+                    node.name;
+            res.add(s);
         }
         int i = 0;
         for(Map.Entry<String, STNode> entry : node.children.entrySet()){
             i++;
             boolean subEnd = i == node.children.size();
-            String subPre = pre + (node == root ? "" : (end ? "        " : "│   "));
+            String subPre = pre + (node == root ? "" : (end ? "        " : tab1 + "   "));
             convert(res, entry.getValue(), subPre, subEnd);
         }
     }

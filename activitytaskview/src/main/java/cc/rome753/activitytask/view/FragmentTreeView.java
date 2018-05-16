@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cc.rome753.activitytask.AUtils;
+import cc.rome753.activitytask.R;
 import cc.rome753.activitytask.model.FragmentInfo;
 import cc.rome753.activitytask.model.STree;
 
@@ -65,6 +66,10 @@ public class FragmentTreeView extends LinearLayout {
         mTree = mAFMap.get(activityName);
         if(mTree == null){
             mTree = new STree();
+            mTree.setTabs(
+                    getResources().getString(R.string.tab1),
+                    getResources().getString(R.string.tab2),
+                    getResources().getString(R.string.tab3));
             mAFMap.put(activityName, mTree);
         }
         notifyData();
@@ -83,6 +88,10 @@ public class FragmentTreeView extends LinearLayout {
         STree stree = mAFMap.get(parent);
         if(stree == null){
             stree = new STree();
+            mTree.setTabs(
+                    getResources().getString(R.string.tab1),
+                    getResources().getString(R.string.tab2),
+                    getResources().getString(R.string.tab3));
             mAFMap.put(parent, stree);
         }
 
