@@ -30,4 +30,5 @@ dependencies {
     api 'com.android.support:appcompat-v7:25.2.0'
     testApi 'junit:junit:4.12'
     api project(':activitytaskview')
+//    api 'cc.rome753:activitytaskview:3.5.0'
 }

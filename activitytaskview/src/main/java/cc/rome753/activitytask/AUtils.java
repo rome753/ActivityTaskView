@@ -23,6 +23,10 @@ public class AUtils {
         return (int) (0.5f + dpValue * Resources.getSystem().getDisplayMetrics().density);
     }
 
+    public static int getScreenWidth(Context context){
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
     public static String getSimpleName(Object obj){
         return obj.getClass().getSimpleName() + "@" + Integer.toHexString(obj.hashCode());
     }

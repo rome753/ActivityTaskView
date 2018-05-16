@@ -32,7 +32,7 @@ monitors all activities' lifecycle.
 
 ## Usage
 1) add dependence in module's build.gradle
-> compile 'cc.rome753:activitytaskview:3.5.0'
+> compile 'cc.rome753:activitytaskview:3.6.0'
 
 2) add system alert permission in AndroidManifest.xml
 ```
@@ -47,6 +47,7 @@ public void onCreate() {
     ActivityTask.init(this, BuildConfig.DEBUG);
     // ActivityTask.setAutoHide(false); // optional
     // ActivityTask.setInterval(500);   // optional
+    // ActivityTask.setTextSize(10);    // optional
 }
 ```
 

@@ -18,7 +18,6 @@ import cc.rome753.activitytask.model.TaskInfo;
 
 public class ObserverTextView extends AppCompatTextView implements Observer{
 
-    private static final int TEXT_SIZE = 12;
 
     public ObserverTextView(Context context) {
         this(context, null);
@@ -30,17 +29,19 @@ public class ObserverTextView extends AppCompatTextView implements Observer{
 
     public ObserverTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setTextSize(TEXT_SIZE);
+        setMaxWidth(AUtils.getScreenWidth(context) / 2);
+        setSingleLine();
+        setEllipsize(TextUtils.TruncateAt.END);
         setTextColor(AUtils.COLORS[0]);
     }
 
     public void setShortText(String s){
         int index = s.indexOf("@");
         if(index > 0){
-            setText(s.substring(0, index));
-        } else {
-            setText(s);
+            s = s.substring(0, index);
         }
+        setText(s);
+
     }
 
     @Override

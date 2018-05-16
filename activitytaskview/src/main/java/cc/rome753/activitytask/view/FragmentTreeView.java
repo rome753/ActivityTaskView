@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cc.rome753.activitytask.AUtils;
+import cc.rome753.activitytask.ActivityTask;
 import cc.rome753.activitytask.R;
 import cc.rome753.activitytask.model.FragmentInfo;
 import cc.rome753.activitytask.model.STree;
@@ -51,7 +52,8 @@ public class FragmentTreeView extends LinearLayout {
 
     private void addTextView(String text){
         ObserverTextView textView = new ObserverTextView(getContext());
-        String[] arr = text.split("─");
+        textView.setTextSize(ActivityTask.getTextSize());
+        String[] arr = text.split(getResources().getString(R.string.tab0));
         String name = arr[arr.length - 1];
         int life = mFLMap.containsKey(name) ? mFLMap.get(name) : 0;
         textView.setTag(name);

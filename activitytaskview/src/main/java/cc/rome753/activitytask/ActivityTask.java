@@ -41,6 +41,7 @@ public class ActivityTask {
     private static ActivityTaskView activityTaskView;
     private static boolean autoHide = true;
     private static long interval = 100;
+    private static int textSize = 12;
 
     /**
      * Is current app front. If not, hide the activityTaskView.
@@ -63,6 +64,14 @@ public class ActivityTask {
      */
     public static void setInterval(long interval) {
         ActivityTask.interval = interval;
+    }
+
+    public static int getTextSize() {
+        return textSize;
+    }
+
+    public static void setTextSize(int textSize) {
+        ActivityTask.textSize = textSize;
     }
 
     /**

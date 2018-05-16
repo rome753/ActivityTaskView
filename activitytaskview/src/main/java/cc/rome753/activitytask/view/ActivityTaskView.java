@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import cc.rome753.activitytask.AUtils;
+import cc.rome753.activitytask.ActivityTask;
 import cc.rome753.activitytask.R;
 import cc.rome753.activitytask.model.FragmentInfo;
 import cc.rome753.activitytask.model.TaskInfo;
@@ -46,6 +47,7 @@ public class ActivityTaskView extends FrameLayout {
         String name = taskInfo.getName();
         String parent = taskInfo.getParent();
         ObserverTextView textView = new ObserverTextView(getContext());
+        textView.setTextSize(ActivityTask.getTextSize());
         textView.setShortText(name);
         textView.setTag(name);
         LinearLayout layout = (LinearLayout) findChildByTag(mLinearLayout, parent);
