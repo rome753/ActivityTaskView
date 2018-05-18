@@ -43,6 +43,10 @@ public class FragmentTreeView extends LinearLayout {
         removeAllViews();
         mLifecycleObservable.deleteObservers();
         if(mTree != null){
+            mTree.setTabs(
+                    getResources().getString(R.string.tab1),
+                    getResources().getString(R.string.tab2),
+                    getResources().getString(R.string.tab3));
             List<String> strings = mTree.convertToList();
             for(String s : strings){
                 addTextView(s);
