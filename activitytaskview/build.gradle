@@ -15,8 +15,8 @@ publish {
     userOrg = 'rome713bc'
     groupId = 'cc.rome753'
     artifactId = 'activitytaskview'
-    publishVersion = '3.7.0'
-    desc = 'Long name optimize'
+    publishVersion = '3.8.0'
+    desc = 'fix crash bug'
     website = 'https://github.com/rome753/activitytaskview'
 }
 
@@ -26,8 +26,8 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        versionCode 9
-        versionName "3.7.0"
+        versionCode 10
+        versionName "3.8.0"
 
     }
 

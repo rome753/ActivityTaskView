@@ -31,15 +31,15 @@ monitors all activities' lifecycle.
 ![dialogStyle.gif](http://upload-images.jianshu.io/upload_images/1896166-538d3d530f8cd0d6.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Usage
-1) add dependence in module's build.gradle
-> compile 'cc.rome753:activitytaskview:3.7.0'
+1) Add dependence in module's build.gradle
+> compile 'cc.rome753:activitytaskview:3.8.0'
 
-2) add system alert permission in AndroidManifest.xml
+2) Add system alert permission in AndroidManifest.xml
 ```
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 ```
 
-3) init in application's onCreate()
+3) Init in application's onCreate()
 ```
 @Override
 public void onCreate() {
