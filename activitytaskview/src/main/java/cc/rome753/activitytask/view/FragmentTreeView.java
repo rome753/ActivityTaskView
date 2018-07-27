@@ -21,8 +21,8 @@ import cc.rome753.activitytask.model.STree;
 
 public class FragmentTreeView extends LinearLayout {
 
-    HashMap<String, STree> mAFMap;//activity-fragmentList
-    HashMap<String, Integer> mFLMap;//fragment-life
+    HashMap<String, STree> mAFMap;      //activity-fragmentList
+    HashMap<String, Integer> mFLMap;    //fragment-life
     STree mTree;
 
     LifecycleObservable mLifecycleObservable;
@@ -43,10 +43,6 @@ public class FragmentTreeView extends LinearLayout {
         removeAllViews();
         mLifecycleObservable.deleteObservers();
         if(mTree != null){
-            mTree.setTabs(
-                    getResources().getString(R.string.tab1),
-                    getResources().getString(R.string.tab2),
-                    getResources().getString(R.string.tab3));
             List<String> strings = mTree.convertToList();
             for(String s : strings){
                 addTextView(s);
@@ -57,7 +53,7 @@ public class FragmentTreeView extends LinearLayout {
     private void addTextView(String text){
         ObserverTextView textView = new ObserverTextView(getContext());
         textView.setTextSize(ActivityTask.getTextSize());
-        String[] arr = text.split(getResources().getString(R.string.tab0));
+        String[] arr = text.split(String.valueOf('\u2500')); // -
         String name = arr[arr.length - 1];
         int life = mFLMap.containsKey(name) ? mFLMap.get(name) : 0;
         textView.setTag(name);
@@ -72,10 +68,6 @@ public class FragmentTreeView extends LinearLayout {
         mTree = mAFMap.get(activityName);
         if(mTree == null){
             mTree = new STree();
-            mTree.setTabs(
-                    getResources().getString(R.string.tab1),
-                    getResources().getString(R.string.tab2),
-                    getResources().getString(R.string.tab3));
             mAFMap.put(activityName, mTree);
         }
         notifyData();
@@ -94,10 +86,6 @@ public class FragmentTreeView extends LinearLayout {
         STree stree = mAFMap.get(parent);
         if(stree == null){
             stree = new STree();
-            mTree.setTabs(
-                    getResources().getString(R.string.tab1),
-                    getResources().getString(R.string.tab2),
-                    getResources().getString(R.string.tab3));
             mAFMap.put(parent, stree);
         }
 

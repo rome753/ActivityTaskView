@@ -11,18 +11,14 @@ import java.util.Map;
  */
 public class STree {
 
-    private String tab1, tab2, tab3;
+    private String tab1 = "" + '\u2502';            // |
+    private String tab2 = "" + '\u2514' + '\u2500'; // |_
+    private String tab3 = "" + '\u251c' + '\u2500'; // |-
 
     private STNode root;
 
     public STree() {
         root = new STNode("");
-    }
-
-    public void setTabs(String tab1, String tab2, String tab3){
-        this.tab1 = tab1;
-        this.tab2 = tab2;
-        this.tab3 = tab3;
     }
 
     public void add(LinkedList<String> list) {
