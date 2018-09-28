@@ -101,7 +101,11 @@ public class ActivityTask {
     private static void addViewToWindow(Application app, View view){
         WindowManager windowManager = (WindowManager) app.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-        params.type = WindowManager.LayoutParams.TYPE_PHONE;
+        if (Build.VERSION.SDK_INT >= 26) {// Android 8.0
+            params.type= WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        }else {
+            params.type = WindowManager.LayoutParams.TYPE_PHONE;
+        }
         params.format = PixelFormat.RGBA_8888;
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
