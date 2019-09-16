@@ -1,9 +1,6 @@
 package cc.rome753.singleinstancedemo;
 
-import android.app.Activity;
 import android.app.Application;
-
-import cc.rome753.activitytask.ActivityTask;
 
 
 /**
@@ -15,8 +12,8 @@ public class DemoApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        ActivityTask.init(this, BuildConfig.DEBUG);
-        ActivityTask.setAutoHide(false);
+//        ActivityTask.init(this, BuildConfig.DEBUG);
+//        ActivityTask.setAutoHide(false);
     }
 
 }

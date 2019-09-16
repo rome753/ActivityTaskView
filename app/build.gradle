@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "26.0.3"
     defaultConfig {
-        applicationId "cc.rome753.activitytask"
+        applicationId "cc.rome753.activitytask.demo"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -29,6 +29,4 @@ dependencies {
     })
     api 'com.android.support:appcompat-v7:28.0.0'
     testApi 'junit:junit:4.12'
-    api project(':activitytaskview')
-//    api 'cc.rome753:activitytaskview:3.8.0'
 }

@@ -2,11 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cc.rome753.activitytask">
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:allowBackup="true"
+        android:icon="@drawable/activity_task"
         android:label="@string/app_name"
-        android:supportsRtl="true">
-        <activity android:name="cc.rome753.activitytask.RequestOverlayActivity"></activity>
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="cc.rome753.activitytask.RequestOverlayActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver android:name=".LifecycleReceiver" >
+            <intent-filter>
+                <action android:name="action_update_lifecycle" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

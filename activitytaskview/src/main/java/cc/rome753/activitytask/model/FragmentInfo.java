@@ -1,6 +1,6 @@
 package cc.rome753.activitytask.model;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import java.util.LinkedList;
 

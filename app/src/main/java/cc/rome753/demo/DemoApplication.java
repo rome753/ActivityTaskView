@@ -5,25 +5,13 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 
-import java.lang.reflect.Array;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import cc.rome753.activitytask.AUtils;
-import cc.rome753.activitytask.ActivityTask;
-import cc.rome753.activitytask.model.FragmentInfo;
-import cc.rome753.activitytask.model.TaskInfo;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static cc.rome753.activitytask.AUtils.getSimpleName;
 
 /**
  * Created by rome753@163.com on 2017/3/23.
@@ -42,6 +30,7 @@ public class DemoApplication extends Application{
 
     private void sendBroadcast(String lifecycle, Activity activity, Fragment fragment) {
         Intent intent = new Intent("action_update_lifecycle");
+        intent.setPackage("cc.rome753.activitytask");
         intent.putExtra("lifecycle", lifecycle);
         intent.putExtra("task", activity.getTaskId());
         intent.putExtra("activity", activity.toString());

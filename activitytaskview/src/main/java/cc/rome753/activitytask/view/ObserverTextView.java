@@ -1,9 +1,9 @@
 package cc.rome753.activitytask.view;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.widget.TextView;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -16,7 +16,7 @@ import cc.rome753.activitytask.model.TaskInfo;
  * Created by rome753@163.com on 2017/4/3.
  */
 
-public class ObserverTextView extends AppCompatTextView implements Observer{
+public class ObserverTextView extends TextView implements Observer{
 
 
     public ObserverTextView(Context context) {
