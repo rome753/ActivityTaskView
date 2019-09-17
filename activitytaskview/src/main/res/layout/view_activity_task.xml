@@ -24,12 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <cc.rome753.activitytask.view.FragmentTreeView
-            android:id="@+id/flv"
+        <FrameLayout
+            android:id="@+id/fl"
             android:layout_marginRight="2dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </cc.rome753.activitytask.view.FragmentTreeView>
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp">
+        </FrameLayout>
         
     </LinearLayout>
 </FrameLayout>

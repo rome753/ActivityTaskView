@@ -15,11 +15,13 @@ public class LifecycleReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if(TextUtils.equals(intent.getAction(), "action_update_lifecycle")) {
             String lifecycle = intent.getStringExtra("lifecycle");
-            int task = intent.getIntExtra("task", 0);
+            String task = intent.getStringExtra("task");
             String activity = intent.getStringExtra("activity");
             ArrayList<String> fragments = intent.getStringArrayListExtra("fragments");
             String s = fragments == null ? "" : Arrays.toString(fragments.toArray());
             Log.d("chao", lifecycle + " " + task + " " + activity + " " + s);
+
+            ActivityTask.add(lifecycle, task, activity, fragments);
         }
     }
 }
