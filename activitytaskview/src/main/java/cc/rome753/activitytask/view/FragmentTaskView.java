@@ -1,6 +1,7 @@
 package cc.rome753.activitytask.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -28,6 +29,7 @@ public class FragmentTaskView extends LinearLayout {
     public FragmentTaskView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
+        setBackgroundColor(Color.parseColor("#333333"));
         mLifecycleObservable = new LifecycleObservable();
     }
 
