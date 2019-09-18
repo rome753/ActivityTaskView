@@ -2,7 +2,7 @@ package cc.rome753.activitytask.view;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,26 +22,30 @@ import cc.rome753.activitytask.model.LifecycleInfo;
  * Created by rome753 on 2017/3/31.
  */
 
-public class ActivityTaskView extends FrameLayout {
+public class ActivityTaskView extends LinearLayout {
 
     public static final String TAG = ActivityTaskView.class.getSimpleName();
     private LinearLayout mLinearLayout;
     private FrameLayout mContainer;
     private View mTinyView;
     private View mTaskView;
+    private View mEmptyView;
 
     private LifecycleObservable mObservable;
 
     private int mStatusHeight;
+    private int mScreenWidth;
 
     public ActivityTaskView(Context context) {
         super(context);
         inflate(context, R.layout.view_activity_task, this);
         mStatusHeight = AUtils.getStatusBarHeight(context);
+        mScreenWidth = AUtils.getScreenWidth(context);
         mLinearLayout = findViewById(R.id.ll);
         mContainer = findViewById(R.id.fl);
         mTinyView = findViewById(R.id.tiny_view);
         mTaskView = findViewById(R.id.task_view);
+        mEmptyView = findViewById(R.id.view_empty);
         mObservable = new LifecycleObservable();
     }
 
@@ -57,11 +61,13 @@ public class ActivityTaskView extends FrameLayout {
 
     float mInnerX;
     float mInnerY;
+    long downTime;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                downTime = System.currentTimeMillis();
                 mInnerX = event.getX();
                 mInnerY = event.getY();
                 break;
@@ -74,16 +80,22 @@ public class ActivityTaskView extends FrameLayout {
                 updateLayout(params);
                 break;
             case MotionEvent.ACTION_UP:
-                showTinyOrNot();
+                if(System.currentTimeMillis() - downTime < 100
+                        && Math.abs(event.getX() - mInnerX) < 10
+                        && Math.abs(event.getY() - mInnerY) < 10) {
+                    doClick();
+                }
+                moveToBorder();
                 break;
 
         }
         return true;
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
+    private void doClick() {
+        boolean visible = mTaskView.getVisibility() == VISIBLE;
+        mTaskView.setVisibility(visible ? GONE : VISIBLE);
+        mTinyView.setVisibility(!visible ? GONE : VISIBLE);
     }
 
     private void updateLayout(WindowManager.LayoutParams params){
@@ -93,17 +105,21 @@ public class ActivityTaskView extends FrameLayout {
         }
     }
 
-    private void showTinyOrNot() {
+    private void moveToBorder() {
         WindowManager.LayoutParams p = (WindowManager.LayoutParams) getLayoutParams();
-        if(p.x < 5 || mLinearLayout.getChildCount() == 0){
-            mTinyView.setVisibility(VISIBLE);
-            mTaskView.setVisibility(GONE);
+        Log.d("chao", "x " + p.x + " " + ((mScreenWidth - getWidth()) / 2));
+
+        if(p.x <= (mScreenWidth - getWidth()) / 2) { // move left
             p.x = 0;
-            updateLayout(p);
-        }else{
-            mTinyView.setVisibility(GONE);
-            mTaskView.setVisibility(VISIBLE);
+            removeView(mTinyView);
+            addView(mTinyView, 0);
+
+        } else { // move right
+            p.x = mScreenWidth;
+            removeView(mTinyView);
+            addView(mTinyView);
         }
+        updateLayout(p);
     }
 
     private ATree aTree = new ATree();
@@ -156,6 +172,14 @@ public class ActivityTaskView extends FrameLayout {
             }
             mLinearLayout.addView(layout, 0);
         }
+        mEmptyView.setVisibility(mLinearLayout.getChildCount() == 0 ? VISIBLE : GONE);
+
+    }
+
+    public void clear() {
+        aTree = new ATree();
+        mContainer.removeAllViews();
+        notifyData();
     }
 
 }

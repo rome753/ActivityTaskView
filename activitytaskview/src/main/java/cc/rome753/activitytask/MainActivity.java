@@ -26,6 +26,14 @@ public class MainActivity extends AppCompatActivity {
             requestWindowPermission();
         });
 
+        binding.btnClear.setOnClickListener(v -> {
+            ActivityTask.clear();
+        });
+
+        binding.btnExit.setOnClickListener(v -> {
+            System.exit(0);
+        });
+
     }
 
     @Override

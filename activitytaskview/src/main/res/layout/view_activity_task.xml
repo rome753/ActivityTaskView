@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/bg_rect"
-    android:padding="2dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <View
+    <ImageView
         android:id="@+id/tiny_view"
-        android:layout_width="10dp"
-        android:layout_height="24dp" />
+        android:src="@mipmap/activity_task"
+        android:background="@drawable/bg_dot"
+        android:padding="8dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
 
     <LinearLayout
         android:id="@+id/task_view"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:background="@android:color/white"
+        android:background="@drawable/bg_task"
+        android:layout_margin="1dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/view_empty"
+            android:text="No Activity"
+            android:textColor="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/ll"
             android:orientation="vertical"
-            android:gravity="end"
+            android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

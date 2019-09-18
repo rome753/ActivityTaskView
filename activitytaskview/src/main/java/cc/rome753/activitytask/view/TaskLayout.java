@@ -30,7 +30,7 @@ public class TaskLayout extends LinearLayout {
     }
 
     public void setTitle(String title) {
-        tv.setText(title);
+        tv.setText("[" + title + "]");
     }
 
     public void add(View view) {

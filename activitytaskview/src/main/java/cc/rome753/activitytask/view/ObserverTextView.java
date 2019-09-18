@@ -49,7 +49,7 @@ public class ObserverTextView extends AppCompatTextView implements Observer{
 
         int i2 = s.indexOf(" ");
 
-        setTextColor(s.contains("Resume") ? Color.RED : Color.BLACK);
+        setTextColor(s.contains("Resume") ? Color.YELLOW : Color.WHITE);
         SpannableString span = new SpannableString(s);
         span.setSpan(absoluteSizeSpan, i2, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         setText(span);

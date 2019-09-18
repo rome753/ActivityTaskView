@@ -28,10 +28,19 @@ public class ActivityTask {
 
     private static ActivityTaskView activityTaskView;
 
-    private static long interval = 100;
+    public static long interval = 100;
 
     public static void start(Context context) {
-        addViewToWindow(context, activityTaskView = new ActivityTaskView(context));
+        if(activityTaskView == null) {
+            activityTaskView = new ActivityTaskView(context);
+            addViewToWindow(context, activityTaskView);
+        }
+    }
+
+    public static void clear() {
+        if(activityTaskView != null) {
+            activityTaskView.clear();
+        }
     }
 
     private static void addViewToWindow(Context context, View view){
@@ -90,9 +99,8 @@ public class ActivityTask {
                 if(info == null) {
                     return;
                 }
+                info.lifecycle = trimLifecycle(info.lifecycle);
                 if(info.fragments != null) {
-                    info.lifecycle = info.lifecycle.replace("onFragment", "");
-
                     FragmentTaskView fragmentTaskView = activityTaskView.findFragmentTaskView(info.activity);
                     if(fragmentTaskView != null) {
                         if (info.lifecycle.contains("PreAttach")) {
@@ -104,8 +112,6 @@ public class ActivityTask {
                         }
                     }
                 } else {
-                    info.lifecycle = info.lifecycle.replace("onActivity", "");
-
                     if(info.lifecycle.contains("Create")) {
                         activityTaskView.add(info);
                     } else if(info.lifecycle.contains("Destroy")) {
@@ -115,6 +121,13 @@ public class ActivityTask {
                     }
                 }
             }
+        }
+
+        private String trimLifecycle(String lifecycle) {
+            lifecycle = lifecycle.replace("onFragment", "");
+            lifecycle = lifecycle.replace("onActivity", "");
+            lifecycle = lifecycle.replace("SaveInstanceState", "SaveIS");
+            return lifecycle;
         }
     }
 
