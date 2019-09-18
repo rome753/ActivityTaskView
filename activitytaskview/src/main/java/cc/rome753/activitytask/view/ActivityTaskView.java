@@ -45,15 +45,6 @@ public class ActivityTaskView extends FrameLayout {
         mObservable = new LifecycleObservable();
     }
 
-    private LinearLayout createLinearLayout(String tag) {
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundResource(R.drawable.bg_rect_inner);
-        layout.setPadding(10,0,10,0);
-        layout.setTag(tag);
-        return layout;
-    }
-
     public FragmentTaskView findFragmentTaskView(String activity) {
         for(int i = 0; i < mContainer.getChildCount(); i++) {
             View view = mContainer.getChildAt(i);
@@ -142,7 +133,7 @@ public class ActivityTaskView extends FrameLayout {
         } else if(info.lifecycle.contains("Pause")) {
             FragmentTaskView view = findFragmentTaskView(info.activity);
             if(view != null) {
-                view.setVisibility(INVISIBLE);
+                view.setVisibility(GONE);
             }
         }
 
@@ -155,14 +146,15 @@ public class ActivityTaskView extends FrameLayout {
         mObservable.deleteObservers();
         Set<Map.Entry<String, ArrayList<String>>> set = aTree.entrySet();
         for(Map.Entry<String, ArrayList<String>> entry : set) {
-            LinearLayout layout = createLinearLayout("");
+            TaskLayout layout = new TaskLayout(getContext());
+            layout.setTitle(entry.getKey());
             for (String value : entry.getValue()) {
                 ObserverTextView textView = new ObserverTextView(getContext());
                 textView.setInfoText(value, aTree.getLifecycle(value));
-                layout.addView(textView, 0);
+                layout.add(textView);
                 mObservable.addObserver(textView);
             }
-            mLinearLayout.addView(layout);
+            mLinearLayout.addView(layout, 0);
         }
     }
 

@@ -20,7 +20,7 @@
 
         <receiver android:name=".LifecycleReceiver">
             <intent-filter>
-                <action android:name="action_update_lifecycle" />
+                <action android:name="cc.rome753.activitytask.ACTION_UPDATE_LIFECYCLE" />
             </intent-filter>
         </receiver>
     </application>

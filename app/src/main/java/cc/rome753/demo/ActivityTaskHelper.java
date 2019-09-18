@@ -24,10 +24,11 @@ public class ActivityTaskHelper {
     }
 
     private void sendBroadcast(String lifecycle, Activity activity, Fragment fragment) {
-        Intent intent = new Intent("action_update_lifecycle");
-        intent.setPackage("cc.rome753.activitytask");
+        String packageName = "cc.rome753.activitytask";
+        Intent intent = new Intent(packageName + ".ACTION_UPDATE_LIFECYCLE");
+        intent.setPackage(packageName);
         intent.putExtra("lifecycle", lifecycle);
-        intent.putExtra("task", Integer.toHexString(activity.getTaskId()));
+        intent.putExtra("task", activity.getPackageName() + "@" + Integer.toHexString(activity.getTaskId()));
         intent.putExtra("activity", getSimpleName(activity));
         if(fragment != null) {
             intent.putStringArrayListExtra("fragments", getAllFragments(fragment));
@@ -38,7 +39,7 @@ public class ActivityTaskHelper {
     private ArrayList<String> getAllFragments(Fragment fragment){
         ArrayList<String> res = new ArrayList<>();
         while(fragment != null){
-            res.add(AUtils.getSimpleName(fragment));
+            res.add(getSimpleName(fragment));
             fragment = fragment.getParentFragment();
         }
         return res;

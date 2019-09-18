@@ -2,8 +2,9 @@ package cc.rome753.activitytask.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-public class ATree extends HashMap<String, ArrayList<String>> {
+public class ATree extends LinkedHashMap<String, ArrayList<String>> {
 
     public void add(String key, String value, String lifecycle) {
         ArrayList<String> values = get(key);
@@ -22,6 +23,9 @@ public class ATree extends HashMap<String, ArrayList<String>> {
             return;
         }
         values.remove(value);
+        if(values.isEmpty()) {
+            remove(key);
+        }
 
         lifeMap.remove(value);
     }

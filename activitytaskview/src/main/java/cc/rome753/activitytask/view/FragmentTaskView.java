@@ -42,7 +42,7 @@ public class FragmentTaskView extends LinearLayout {
     }
 
     public void update(LifecycleInfo info) {
-        mTree.updateLifecycle(info.activity, info.lifecycle);
+        mTree.updateLifecycle(info.fragments.get(0), info.lifecycle);
         notifyData();
     }
 

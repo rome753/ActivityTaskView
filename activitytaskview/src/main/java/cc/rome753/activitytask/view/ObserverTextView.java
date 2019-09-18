@@ -2,7 +2,10 @@ package cc.rome753.activitytask.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -19,6 +22,7 @@ import cc.rome753.activitytask.model.LifecycleInfo;
 
 public class ObserverTextView extends AppCompatTextView implements Observer{
 
+    private static AbsoluteSizeSpan absoluteSizeSpan = new AbsoluteSizeSpan(8, true);
 
     public ObserverTextView(Context context) {
         this(context, null);
@@ -32,7 +36,6 @@ public class ObserverTextView extends AppCompatTextView implements Observer{
         super(context, attrs, defStyleAttr);
         setMaxLines(1);
         setTextSize(10);
-        setTextColor(Color.BLACK);
     }
 
     public void setInfoText(String s, String lifecycle) {
@@ -40,8 +43,16 @@ public class ObserverTextView extends AppCompatTextView implements Observer{
         String tag = s.substring(i1);
         setTag(tag);
 
+        s = s.replace("Activity", "A…");
+        s = s.replace("Fragment", "F…");
         s = s.replace(tag, " ") + lifecycle;
-        setText(s);
+
+        int i2 = s.indexOf(" ");
+
+        setTextColor(s.contains("Resume") ? Color.RED : Color.BLACK);
+        SpannableString span = new SpannableString(s);
+        span.setSpan(absoluteSizeSpan, i2, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        setText(span);
     }
 
 
