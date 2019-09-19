@@ -36,13 +36,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/fl"
+            android:orientation="vertical"
             android:layout_marginRight="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp">
-        </FrameLayout>
+        </LinearLayout>
         
     </LinearLayout>
 </FrameLayout>

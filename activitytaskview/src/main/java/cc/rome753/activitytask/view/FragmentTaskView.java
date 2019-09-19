@@ -5,11 +5,11 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import java.util.HashMap;
 import java.util.List;
 
 import cc.rome753.activitytask.model.FTree;
 import cc.rome753.activitytask.model.LifecycleInfo;
+import cc.rome753.activitytask.model.TextViewFractory;
 
 
 /**
@@ -20,8 +20,6 @@ public class FragmentTaskView extends LinearLayout {
 
     FTree mTree = new FTree();
 
-    LifecycleObservable mLifecycleObservable;
-
     public FragmentTaskView(Context context) {
         this(context, null);
     }
@@ -30,7 +28,6 @@ public class FragmentTaskView extends LinearLayout {
         super(context, attrs);
         setOrientation(VERTICAL);
         setBackgroundColor(Color.parseColor("#333333"));
-        mLifecycleObservable = new LifecycleObservable();
     }
 
     public void add(LifecycleInfo info) {
@@ -49,17 +46,16 @@ public class FragmentTaskView extends LinearLayout {
     }
 
     private void notifyData(){
+        TextViewFractory.get().recycle(this);
         removeAllViews();
-        mLifecycleObservable.deleteObservers();
         if(mTree != null){
             List<String> strings = mTree.convertToList();
             for(String s : strings){
-                ObserverTextView textView = new ObserverTextView(getContext());
+                ObserverTextView textView = TextViewFractory.get().getOne(getContext());
                 String[] arr = s.split(String.valueOf('\u2500')); // -
                 String name = arr[arr.length - 1];
                 textView.setInfoText(s, mTree.getLifecycle(name));
                 addView(textView);
-                mLifecycleObservable.addObserver(textView);
             }
         }
     }

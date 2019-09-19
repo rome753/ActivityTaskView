@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import cc.rome753.activitytask.AUtils;
 import cc.rome753.activitytask.R;
 import cc.rome753.activitytask.model.ATree;
 import cc.rome753.activitytask.model.LifecycleInfo;
+import cc.rome753.activitytask.model.TextViewFractory;
 
 /**
  * Created by rome753 on 2017/3/31.
@@ -25,13 +27,12 @@ import cc.rome753.activitytask.model.LifecycleInfo;
 public class ActivityTaskView extends LinearLayout {
 
     public static final String TAG = ActivityTaskView.class.getSimpleName();
-    private LinearLayout mLinearLayout;
-    private FrameLayout mContainer;
+    private ViewGroup mLinearLayout;
+    private ViewGroup mContainer;
     private View mTinyView;
     private View mTaskView;
     private View mEmptyView;
 
-    private LifecycleObservable mObservable;
 
     private int mStatusHeight;
     private int mScreenWidth;
@@ -46,7 +47,6 @@ public class ActivityTaskView extends LinearLayout {
         mTinyView = findViewById(R.id.tiny_view);
         mTaskView = findViewById(R.id.task_view);
         mEmptyView = findViewById(R.id.view_empty);
-        mObservable = new LifecycleObservable();
     }
 
     public FragmentTaskView findFragmentTaskView(String activity) {
@@ -127,48 +127,37 @@ public class ActivityTaskView extends LinearLayout {
     public void add(LifecycleInfo info) {
         FragmentTaskView view = new FragmentTaskView(getContext());
         view.setTag(info.activity);
-        mContainer.addView(view);
+        mContainer.addView(view, 0);
 
         aTree.add(info.task, info.activity, info.lifecycle);
         notifyData();
     }
 
     public void remove(LifecycleInfo info) {
-        mContainer.removeView(findFragmentTaskView(info.activity));
+        FragmentTaskView view = findFragmentTaskView(info.activity);
+        TextViewFractory.get().recycle(view);
+        mContainer.removeView(view);
 
         aTree.remove(info.task, info.activity);
         notifyData();
     }
 
     public void update(LifecycleInfo info) {
-        if(info.lifecycle.contains("Resume")) {
-            FragmentTaskView view = findFragmentTaskView(info.activity);
-            if(view != null) {
-                view.setVisibility(VISIBLE);
-            }
-        } else if(info.lifecycle.contains("Pause")) {
-            FragmentTaskView view = findFragmentTaskView(info.activity);
-            if(view != null) {
-                view.setVisibility(GONE);
-            }
-        }
-
         aTree.updateLifecycle(info.activity, info.lifecycle);
         notifyData();
     }
 
     private void notifyData() {
+        TextViewFractory.get().recycle(mLinearLayout);
         mLinearLayout.removeAllViews();
-        mObservable.deleteObservers();
         Set<Map.Entry<String, ArrayList<String>>> set = aTree.entrySet();
         for(Map.Entry<String, ArrayList<String>> entry : set) {
             TaskLayout layout = new TaskLayout(getContext());
             layout.setTitle(entry.getKey());
             for (String value : entry.getValue()) {
-                ObserverTextView textView = new ObserverTextView(getContext());
+                ObserverTextView textView = TextViewFractory.get().getOne(getContext());
                 textView.setInfoText(value, aTree.getLifecycle(value));
-                layout.add(textView);
-                mObservable.addObserver(textView);
+                layout.addFirst(textView);
             }
             mLinearLayout.addView(layout, 0);
         }

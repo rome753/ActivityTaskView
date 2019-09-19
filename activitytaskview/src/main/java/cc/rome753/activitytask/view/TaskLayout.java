@@ -3,6 +3,7 @@ package cc.rome753.activitytask.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,7 +14,7 @@ import cc.rome753.activitytask.R;
  * Created by rome753 on 2017/3/31.
  */
 
-public class TaskLayout extends LinearLayout {
+public class TaskLayout extends FrameLayout {
 
     LinearLayout ll;
     TextView tv;
@@ -33,7 +34,7 @@ public class TaskLayout extends LinearLayout {
         tv.setText("[" + title + "]");
     }
 
-    public void add(View view) {
+    public void addFirst(View view) {
         ll.addView(view, 0);
     }
 
