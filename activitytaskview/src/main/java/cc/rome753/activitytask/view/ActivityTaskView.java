@@ -120,6 +120,7 @@ public class ActivityTaskView extends LinearLayout {
 
     public void add(LifecycleInfo info) {
         FragmentTaskView view = new FragmentTaskView(getContext());
+        view.setTitle(info.activity);
         view.setTag(info.activity);
         mContainer.addView(view, 0);
 
@@ -149,7 +150,7 @@ public class ActivityTaskView extends LinearLayout {
             TaskLayout layout = new TaskLayout(getContext());
             layout.setTitle(entry.getKey());
             for (String value : entry.getValue()) {
-                ObserverTextView textView = ViewPool.get().getOne(getContext());
+                ATextView textView = ViewPool.get().getOne(getContext());
                 textView.setInfoText(value, aTree.getLifecycle(value));
                 layout.addFirst(textView);
             }

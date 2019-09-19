@@ -6,11 +6,11 @@ import android.view.ViewGroup;
 
 import java.util.LinkedList;
 
-import cc.rome753.activitytask.view.ObserverTextView;
+import cc.rome753.activitytask.view.ATextView;
 
 public class ViewPool {
 
-    LinkedList<ObserverTextView> pool = new LinkedList<>();
+    LinkedList<ATextView> pool = new LinkedList<>();
     private static ViewPool factory = new ViewPool();
     public static ViewPool get() {
         return factory;
@@ -20,8 +20,8 @@ public class ViewPool {
         if(viewGroup != null) {
             for(int i = 0; i < viewGroup.getChildCount(); i++) {
                 View view = viewGroup.getChildAt(i);
-                if(view instanceof ObserverTextView) {
-                    pool.add((ObserverTextView) view);
+                if(view instanceof ATextView) {
+                    pool.add((ATextView) view);
                 } else if(view instanceof ViewGroup) {
                     recycle((ViewGroup) view);
                 }
@@ -29,10 +29,10 @@ public class ViewPool {
         }
     }
 
-    public ObserverTextView getOne(Context context) {
-        ObserverTextView view;
+    public ATextView getOne(Context context) {
+        ATextView view;
         if(pool.isEmpty()) {
-            view = new ObserverTextView(context);
+            view = new ATextView(context);
         } else {
             view = pool.remove();
             removeParent(view);

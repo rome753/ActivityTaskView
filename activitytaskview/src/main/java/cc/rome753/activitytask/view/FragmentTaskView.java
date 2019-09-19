@@ -1,9 +1,7 @@
 package cc.rome753.activitytask.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ import cc.rome753.activitytask.model.ViewPool;
  * Created by rome753 on 2017/3/31.
  */
 
-public class FragmentTaskView extends LinearLayout {
+public class FragmentTaskView extends TaskLayout {
 
     FTree mTree = new FTree();
 
@@ -26,8 +24,13 @@ public class FragmentTaskView extends LinearLayout {
 
     public FragmentTaskView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setOrientation(VERTICAL);
-        setBackgroundColor(Color.parseColor("#333333"));
+        setVisibility(GONE);
+    }
+
+    @Override
+    public void setTitle(String title) {
+        String[] ss = title.split("@");
+        tv.setText(ss[0]);
     }
 
     public void add(LifecycleInfo info) {
@@ -47,17 +50,18 @@ public class FragmentTaskView extends LinearLayout {
 
     private void notifyData(){
         ViewPool.get().recycle(this);
-        removeAllViews();
+        ll.removeAllViews();
         if(mTree != null){
             List<String> strings = mTree.convertToList();
             for(String s : strings){
-                ObserverTextView textView = ViewPool.get().getOne(getContext());
+                ATextView textView = ViewPool.get().getOne(getContext());
                 String[] arr = s.split(String.valueOf('\u2500')); // -
                 String name = arr[arr.length - 1];
                 textView.setInfoText(s, mTree.getLifecycle(name));
-                addView(textView);
+                ll.addView(textView);
             }
         }
+        setVisibility(ll.getChildCount() == 0 ? GONE : VISIBLE);
     }
 
 }
