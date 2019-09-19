@@ -12,9 +12,9 @@ import androidx.databinding.DataBindingUtil;
 
 import cc.rome753.activitytask.databinding.ActivityMainBinding;
 
-
 public class MainActivity extends AppCompatActivity {
 
+    String[] intervals = {"0", "10", "50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "2000"}; // ms
     ActivityMainBinding binding;
 
     @Override
@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
             System.exit(0);
         });
 
+        binding.np.setMaxValue(intervals.length - 1);
+        binding.np.setValue(3);
+        binding.np.setDisplayedValues(intervals);
+        binding.np.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            ActivityTask.interval = Long.parseLong(intervals[newVal]);
+        });
     }
 
     @Override

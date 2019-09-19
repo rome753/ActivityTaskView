@@ -126,7 +126,7 @@ public class ActivityTask {
         private String trimLifecycle(String lifecycle) {
             lifecycle = lifecycle.replace("onFragment", "");
             lifecycle = lifecycle.replace("onActivity", "");
-            lifecycle = lifecycle.replace("SaveInstanceState", "SaveIS");
+            lifecycle = lifecycle.replace("SaveInstanceState", "SIS");
             return lifecycle;
         }
     }
