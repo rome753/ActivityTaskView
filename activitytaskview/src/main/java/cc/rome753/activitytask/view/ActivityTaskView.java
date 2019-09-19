@@ -111,13 +111,8 @@ public class ActivityTaskView extends LinearLayout {
 
         if(p.x <= (mScreenWidth - getWidth()) / 2) { // move left
             p.x = 0;
-            removeView(mTinyView);
-            addView(mTinyView, 0);
-
         } else { // move right
             p.x = mScreenWidth;
-            removeView(mTinyView);
-            addView(mTinyView);
         }
         updateLayout(p);
     }

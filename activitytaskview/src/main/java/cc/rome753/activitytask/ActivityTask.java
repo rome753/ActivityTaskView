@@ -111,12 +111,14 @@ public class ActivityTask {
                         }
                     }
                 } else {
-                    if(info.lifecycle.contains("Create")) {
-                        activityTaskView.add(info);
-                    } else if(info.lifecycle.contains("Destroy")) {
-                        activityTaskView.remove(info);
-                    } else {
-                        activityTaskView.update(info);
+                    if(activityTaskView != null) {
+                        if (info.lifecycle.contains("Create")) {
+                            activityTaskView.add(info);
+                        } else if (info.lifecycle.contains("Destroy")) {
+                            activityTaskView.remove(info);
+                        } else {
+                            activityTaskView.update(info);
+                        }
                     }
                 }
             }

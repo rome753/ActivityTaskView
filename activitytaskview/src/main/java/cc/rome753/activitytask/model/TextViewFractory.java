@@ -35,8 +35,15 @@ public class TextViewFractory {
             view = new ObserverTextView(context);
         } else {
             view = pool.remove();
+            removeParent(view);
         }
         return view;
+    }
+
+    private void removeParent(View view) {
+        if(view != null && view.getParent() instanceof ViewGroup) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 
 }
