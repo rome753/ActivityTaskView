@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import cc.rome753.activitytask.AUtils;
 import cc.rome753.activitytask.R;
 import cc.rome753.activitytask.model.ATree;
 import cc.rome753.activitytask.model.LifecycleInfo;
-import cc.rome753.activitytask.model.TextViewFractory;
+import cc.rome753.activitytask.model.ViewPool;
 
 /**
  * Created by rome753 on 2017/3/31.
@@ -130,7 +129,7 @@ public class ActivityTaskView extends LinearLayout {
 
     public void remove(LifecycleInfo info) {
         FragmentTaskView view = findFragmentTaskView(info.activity);
-        TextViewFractory.get().recycle(view);
+        ViewPool.get().recycle(view);
         mContainer.removeView(view);
 
         aTree.remove(info.task, info.activity);
@@ -143,14 +142,14 @@ public class ActivityTaskView extends LinearLayout {
     }
 
     private void notifyData() {
-        TextViewFractory.get().recycle(mLinearLayout);
+        ViewPool.get().recycle(mLinearLayout);
         mLinearLayout.removeAllViews();
         Set<Map.Entry<String, ArrayList<String>>> set = aTree.entrySet();
         for(Map.Entry<String, ArrayList<String>> entry : set) {
             TaskLayout layout = new TaskLayout(getContext());
             layout.setTitle(entry.getKey());
             for (String value : entry.getValue()) {
-                ObserverTextView textView = TextViewFractory.get().getOne(getContext());
+                ObserverTextView textView = ViewPool.get().getOne(getContext());
                 textView.setInfoText(value, aTree.getLifecycle(value));
                 layout.addFirst(textView);
             }

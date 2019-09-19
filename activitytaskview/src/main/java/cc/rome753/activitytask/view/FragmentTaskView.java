@@ -9,7 +9,7 @@ import java.util.List;
 
 import cc.rome753.activitytask.model.FTree;
 import cc.rome753.activitytask.model.LifecycleInfo;
-import cc.rome753.activitytask.model.TextViewFractory;
+import cc.rome753.activitytask.model.ViewPool;
 
 
 /**
@@ -46,12 +46,12 @@ public class FragmentTaskView extends LinearLayout {
     }
 
     private void notifyData(){
-        TextViewFractory.get().recycle(this);
+        ViewPool.get().recycle(this);
         removeAllViews();
         if(mTree != null){
             List<String> strings = mTree.convertToList();
             for(String s : strings){
-                ObserverTextView textView = TextViewFractory.get().getOne(getContext());
+                ObserverTextView textView = ViewPool.get().getOne(getContext());
                 String[] arr = s.split(String.valueOf('\u2500')); // -
                 String name = arr[arr.length - 1];
                 textView.setInfoText(s, mTree.getLifecycle(name));

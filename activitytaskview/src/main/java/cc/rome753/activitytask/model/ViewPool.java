@@ -8,11 +8,11 @@ import java.util.LinkedList;
 
 import cc.rome753.activitytask.view.ObserverTextView;
 
-public class TextViewFractory {
+public class ViewPool {
 
     LinkedList<ObserverTextView> pool = new LinkedList<>();
-    private static TextViewFractory factory = new TextViewFractory();
-    public static TextViewFractory get() {
+    private static ViewPool factory = new ViewPool();
+    public static ViewPool get() {
         return factory;
     }
 
