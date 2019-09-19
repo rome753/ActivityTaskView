@@ -99,7 +99,6 @@ public class ActivityTask {
                 if(info == null) {
                     return;
                 }
-                info.lifecycle = trimLifecycle(info.lifecycle);
                 if(info.fragments != null) {
                     FragmentTaskView fragmentTaskView = activityTaskView.findFragmentTaskView(info.activity);
                     if(fragmentTaskView != null) {
@@ -123,12 +122,6 @@ public class ActivityTask {
             }
         }
 
-        private String trimLifecycle(String lifecycle) {
-            lifecycle = lifecycle.replace("onFragment", "");
-            lifecycle = lifecycle.replace("onActivity", "");
-            lifecycle = lifecycle.replace("SaveInstanceState", "SIS");
-            return lifecycle;
-        }
     }
 
 }

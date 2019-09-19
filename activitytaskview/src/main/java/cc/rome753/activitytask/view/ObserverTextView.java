@@ -43,6 +43,9 @@ public class ObserverTextView extends AppCompatTextView implements Observer{
         String tag = s.substring(i1);
         setTag(tag);
 
+        lifecycle = lifecycle.replace("onFragment", "");
+        lifecycle = lifecycle.replace("onActivity", "");
+        lifecycle = lifecycle.replace("SaveInstanceState", "SIS");
         s = s.replace("Activity", "A…");
         s = s.replace("Fragment", "F…");
         s = s.replace(tag, " ") + lifecycle;
