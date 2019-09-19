@@ -1,17 +1,27 @@
 # ActivityTaskView
-ActivityTaskView is a float window that shows activity task stacks in a app,
-monitors all activities' lifecycle.
+
+![AcitivtyTask.png](https://upload-images.jianshu.io/upload_images/1896166-3055e957eb03b6d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Introduction
+[中文文档](https://www.jianshu.com/p/c34483bb5c0f)
 
-### Colors of lifecycles
+### New UI and Function
 
-- ![#00000000](https://placehold.it/15/00000000/000000?text=+) onCreate
-- ![#33ff0000](https://placehold.it/15/33ff0000/000000?text=+) onStart
-- ![#ffff0000](https://placehold.it/15/ffff0000/000000?text=+) onResume
-- ![#ff000000](https://placehold.it/15/ff000000/000000?text=+) onPause
-- ![#33000000](https://placehold.it/15/33000000/000000?text=+) onStop
-- ![#00000000](https://placehold.it/15/00000000/000000?text=+) onDestroy
+![ActivityTask.gif](https://upload-images.jianshu.io/upload_images/1896166-4a0425e42ae702c1.gif?imageMogr2/auto-orient/strip)
+
+- Show fragment tree of an activity
+- Show lifecycle text behind Activity/Fragment
+- Float window auto attach to border
+- Tap float window to show tiny icon, and tap to show again
+
+**Define short name**
+
+Name | Short name
+-----|-----------
+Activity | A…
+Fragment | F…
+SaveInstanceState | SIS
+
 
 ### Use in demo(show different launch mode)
 
@@ -31,27 +41,27 @@ monitors all activities' lifecycle.
 ![dialogStyle.gif](http://upload-images.jianshu.io/upload_images/1896166-538d3d530f8cd0d6.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Usage
-1) Add dependence in module's build.gradle
-> compile 'cc.rome753:activitytaskview:3.8.0'
+1. Install ActivityTaskView release apk, open it and grant window permission
 
-2) Add system alert permission in AndroidManifest.xml
+https://github.com/rome753/ActivityTaskView/releases/tag/v4.1.0
+
+2. Add ActivityTaskHelper.java file to you project
+
+https://github.com/rome753/ActivityTaskView/blob/master/app/src/main/java/cc/rome753/demo/ActivityTaskHelper.java
+
+3. Use ActivityTaskHelper in your application's onCreate()
 ```
-<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        if(BuildConfig.DEBUG) {
+            new ActivityTaskHelper().init(this);
+        }
+    }
 ```
 
-3) Init in application's onCreate()
-```
-@Override
-public void onCreate() {
-    super.onCreate();
-    ActivityTask.init(this, BuildConfig.DEBUG);
-    // ActivityTask.setAutoHide(false); // optional
-    // ActivityTask.setInterval(500);   // optional
-    // ActivityTask.setTextSize(10);    // optional
-}
-```
-
-> minSdkVersion 14
+4. Launch your app, and lifecycles will be showed in the float window.
 
 ## License
   Apache License, Version 2.0  
