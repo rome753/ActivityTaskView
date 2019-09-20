@@ -139,7 +139,7 @@ public class ActivityTaskView extends LinearLayout {
 
     public void update(LifecycleInfo info) {
         aTree.updateLifecycle(info.activity, info.lifecycle);
-        notifyData();
+        ViewPool.get().notifyLifecycleChange(info);
     }
 
     private void notifyData() {

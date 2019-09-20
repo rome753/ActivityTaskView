@@ -45,7 +45,7 @@ public class FragmentTaskView extends TaskLayout {
 
     public void update(LifecycleInfo info) {
         mTree.updateLifecycle(info.fragments.get(0), info.lifecycle);
-        notifyData();
+        ViewPool.get().notifyLifecycleChange(info);
     }
 
     private void notifyData(){
