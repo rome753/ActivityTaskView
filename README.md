@@ -43,7 +43,7 @@ SaveInstanceState | SIS
 ## Usage
 1. Install ActivityTaskView release apk, open it and grant window permission
 
-https://github.com/rome753/ActivityTaskView/releases/tag/v4.1.0
+https://github.com/rome753/ActivityTaskView/releases
 
 2. Add ActivityTaskHelper.java file to you project
 
