@@ -2,6 +2,7 @@ package cc.rome753.activitytask.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import cc.rome753.activitytask.model.ViewPool;
  * Created by rome753 on 2017/3/31.
  */
 
-public class FragmentTaskView extends TaskLayout {
+public class FragmentTaskView extends LinearLayout {
 
     FTree mTree = new FTree();
 
@@ -24,13 +25,7 @@ public class FragmentTaskView extends TaskLayout {
 
     public FragmentTaskView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setVisibility(GONE);
-    }
-
-    @Override
-    public void setTitle(String title) {
-        String[] ss = title.split("@");
-        tv.setText(ss[0]);
+        setOrientation(VERTICAL);
     }
 
     public void add(LifecycleInfo info) {
@@ -38,9 +33,13 @@ public class FragmentTaskView extends TaskLayout {
         notifyData();
     }
 
-    public void remove(List<String> fragments) {
-        mTree.remove(fragments);
+    public void remove(LifecycleInfo info) {
+        mTree.remove(info.fragments);
         notifyData();
+
+        if(getChildCount() == 0) {
+            ViewPool.get().removeF(info.activity);
+        }
     }
 
     public void update(LifecycleInfo info) {
@@ -50,7 +49,7 @@ public class FragmentTaskView extends TaskLayout {
 
     private void notifyData(){
         ViewPool.get().recycle(this);
-        ll.removeAllViews();
+        removeAllViews();
         if(mTree != null){
             List<String> strings = mTree.convertToList();
             for(String s : strings){
@@ -58,10 +57,9 @@ public class FragmentTaskView extends TaskLayout {
                 String[] arr = s.split(String.valueOf('\u2500')); // -
                 String name = arr[arr.length - 1];
                 textView.setInfoText(s, mTree.getLifecycle(name));
-                ll.addView(textView);
+                addView(textView);
             }
         }
-        setVisibility(ll.getChildCount() == 0 ? GONE : VISIBLE);
     }
 
 }

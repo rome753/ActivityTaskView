@@ -14,13 +14,13 @@
         <TextView
             android:id="@+id/tv_title"
             android:text="Package@TaskId"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:textColor="#00FF00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:id="@+id/ll"
+            android:id="@+id/container"
             android:orientation="vertical"
             android:layout_marginStart="5dp"
             android:layout_width="wrap_content"

@@ -1,7 +1,6 @@
 package cc.rome753.activitytask.view;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,8 +9,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import cc.rome753.activitytask.AUtils;
 import cc.rome753.activitytask.R;
@@ -27,11 +26,11 @@ public class ActivityTaskView extends LinearLayout {
 
     public static final String TAG = ActivityTaskView.class.getSimpleName();
     private ViewGroup mLinearLayout;
-    private ViewGroup mContainer;
     private View mTinyView;
     private View mTaskView;
     private View mEmptyView;
 
+    private HashSet<String> mPendingRemove; // Wait for fragments destroy
 
     private int mStatusHeight;
     private int mScreenWidth;
@@ -41,21 +40,11 @@ public class ActivityTaskView extends LinearLayout {
         inflate(context, R.layout.view_activity_task, this);
         mStatusHeight = AUtils.getStatusBarHeight(context);
         mScreenWidth = AUtils.getScreenWidth(context);
-        mLinearLayout = findViewById(R.id.ll);
-        mContainer = findViewById(R.id.fl);
+        mLinearLayout = findViewById(R.id.container);
         mTinyView = findViewById(R.id.tiny_view);
-        mTaskView = findViewById(R.id.task_view);
+        mTaskView = findViewById(R.id.main_view);
         mEmptyView = findViewById(R.id.view_empty);
-    }
-
-    public FragmentTaskView findFragmentTaskView(String activity) {
-        for(int i = 0; i < mContainer.getChildCount(); i++) {
-            View view = mContainer.getChildAt(i);
-            if (TextUtils.equals((CharSequence) view.getTag(), activity)) {
-                return (FragmentTaskView) view;
-            }
-        }
-        return null;
+        mPendingRemove = new HashSet<>();
     }
 
     float mInnerX;
@@ -119,22 +108,18 @@ public class ActivityTaskView extends LinearLayout {
     private ATree aTree = new ATree();
 
     public void add(LifecycleInfo info) {
-        FragmentTaskView view = new FragmentTaskView(getContext());
-        view.setTitle(info.activity);
-        view.setTag(info.activity);
-        mContainer.addView(view, 0);
-
         aTree.add(info.task, info.activity, info.lifecycle);
         notifyData();
     }
 
     public void remove(LifecycleInfo info) {
-        FragmentTaskView view = findFragmentTaskView(info.activity);
-        ViewPool.get().recycle(view);
-        mContainer.removeView(view);
-
-        aTree.remove(info.task, info.activity);
-        notifyData();
+        if(ViewPool.get().getF(info.activity) != null) {
+            mPendingRemove.add(info.activity);
+            update(info);
+        } else {
+            aTree.remove(info.task, info.activity);
+            notifyData();
+        }
     }
 
     public void update(LifecycleInfo info) {
@@ -142,27 +127,58 @@ public class ActivityTaskView extends LinearLayout {
         ViewPool.get().notifyLifecycleChange(info);
     }
 
+    public void addF(LifecycleInfo info) {
+        FragmentTaskView view = ViewPool.get().getF(info.activity);
+        if(view == null) {
+            view = ViewPool.get().addF(getContext(), info.activity);
+            notifyData();
+        }
+        view.add(info);
+    }
+
+    public void removeF(LifecycleInfo info) {
+        FragmentTaskView view = ViewPool.get().getF(info.activity);
+        if(view != null) {
+            view.remove(info);
+            if(view.getChildCount() == 0 && mPendingRemove.contains(info.activity)) {
+                mPendingRemove.remove(info.activity);
+                remove(info);
+            }
+        }
+    }
+
+    public void updateF(LifecycleInfo info) {
+        FragmentTaskView view = ViewPool.get().getF(info.activity);
+        if(view != null) {
+            view.update(info);
+        }
+    }
+
     private void notifyData() {
         ViewPool.get().recycle(mLinearLayout);
         mLinearLayout.removeAllViews();
-        Set<Map.Entry<String, ArrayList<String>>> set = aTree.entrySet();
-        for(Map.Entry<String, ArrayList<String>> entry : set) {
-            TaskLayout layout = new TaskLayout(getContext());
-            layout.setTitle(entry.getKey());
-            for (String value : entry.getValue()) {
+        for(Map.Entry<String, ArrayList<String>> entry : aTree.entrySet()) {
+            TaskLayout taskLayout = new TaskLayout(getContext());
+            taskLayout.setTitle(entry.getKey());
+            for (String activity : entry.getValue()) {
                 ATextView textView = ViewPool.get().getOne(getContext());
-                textView.setInfoText(value, aTree.getLifecycle(value));
-                layout.addFirst(textView);
+                textView.setInfoText(activity, aTree.getLifecycle(activity));
+                taskLayout.addFirst(textView);
+
+                FragmentTaskView view = ViewPool.get().getF(activity);
+                if(view != null) {
+                    taskLayout.addSecond(view);
+                }
             }
-            mLinearLayout.addView(layout, 0);
+            mLinearLayout.addView(taskLayout, 0);
         }
         mEmptyView.setVisibility(mLinearLayout.getChildCount() == 0 ? VISIBLE : GONE);
 
     }
 
     public void clear() {
+        ViewPool.get().clearF();
         aTree = new ATree();
-        mContainer.removeAllViews();
         notifyData();
     }
 

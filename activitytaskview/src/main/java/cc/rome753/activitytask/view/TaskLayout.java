@@ -26,7 +26,7 @@ public class TaskLayout extends FrameLayout {
     public TaskLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.layout_task, this);
-        ll = findViewById(R.id.ll);
+        ll = findViewById(R.id.container);
         tv = findViewById(R.id.tv_title);
     }
 
@@ -36,6 +36,10 @@ public class TaskLayout extends FrameLayout {
 
     public void addFirst(View view) {
         ll.addView(view, 0);
+    }
+
+    public void addSecond(View view) {
+        ll.addView(view, 1);
     }
 
 }

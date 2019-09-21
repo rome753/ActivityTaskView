@@ -31,24 +31,24 @@ public class ActivityTask {
     public static long interval = 100;
 
     public static void start(Context context) {
-        if(activityTaskView == null) {
+        if (activityTaskView == null) {
             activityTaskView = new ActivityTaskView(context);
             addViewToWindow(context, activityTaskView);
         }
     }
 
     public static void clear() {
-        if(activityTaskView != null) {
+        if (activityTaskView != null) {
             activityTaskView.clear();
         }
     }
 
-    private static void addViewToWindow(Context context, View view){
+    private static void addViewToWindow(Context context, View view) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= 26) {// Android 8.0
-            params.type= WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        }else {
+            params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
             params.type = WindowManager.LayoutParams.TYPE_PHONE;
         }
         params.format = PixelFormat.RGBA_8888;
@@ -58,7 +58,7 @@ public class ActivityTask {
         params.gravity = Gravity.START | Gravity.TOP;
         params.x = 0;
         params.y = context.getResources().getDisplayMetrics().heightPixels - 500;
-        if(windowManager != null) {
+        if (windowManager != null) {
             windowManager.addView(view, params);
         }
     }
@@ -66,19 +66,19 @@ public class ActivityTask {
     private static QueueHandler queueHandler;
 
     public static void add(String lifecycle, String task, String activity, List<String> fragments) {
-        if(queueHandler == null) {
+        if (queueHandler == null) {
             queueHandler = new QueueHandler();
         }
         LifecycleInfo info = new LifecycleInfo(lifecycle, task, activity, fragments);
         queueHandler.send(info);
     }
 
-    private static class QueueHandler extends Handler{
+    private static class QueueHandler extends Handler {
 
         private Queue<LifecycleInfo> queue;
         private long lastTime;
 
-        QueueHandler(){
+        QueueHandler() {
             super(Looper.getMainLooper());
             lastTime = 0;
             queue = new LinkedList<>();
@@ -91,27 +91,21 @@ public class ActivityTask {
 
         @Override
         public void handleMessage(Message msg) {
-            if(System.currentTimeMillis() - lastTime < interval){
+            if (System.currentTimeMillis() - lastTime < interval) {
                 sendEmptyMessageDelayed(0, interval / 5);
-            }else {
+            } else {
                 lastTime = System.currentTimeMillis();
                 LifecycleInfo info = queue.poll();
-                if(info == null) {
-                    return;
-                }
-                if(info.fragments != null) {
-                    FragmentTaskView fragmentTaskView = activityTaskView.findFragmentTaskView(info.activity);
-                    if(fragmentTaskView != null) {
+                if (info != null && activityTaskView != null) {
+                    if (info.fragments != null) {
                         if (info.lifecycle.contains("PreAttach")) {
-                            fragmentTaskView.add(info);
+                            activityTaskView.addF(info);
                         } else if (info.lifecycle.contains("Detach")) {
-                            fragmentTaskView.remove(info.fragments);
+                            activityTaskView.removeF(info);
                         } else {
-                            fragmentTaskView.update(info);
+                            activityTaskView.updateF(info);
                         }
-                    }
-                } else {
-                    if(activityTaskView != null) {
+                    } else {
                         if (info.lifecycle.contains("Create")) {
                             activityTaskView.add(info);
                         } else if (info.lifecycle.contains("Destroy")) {

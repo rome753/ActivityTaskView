@@ -39,12 +39,11 @@ public class ATextView extends AppCompatTextView implements Observer {
     }
 
     public void setInfoText(String s, String lifecycle) {
-        int i1 = s.indexOf("@");
-        String tag = s.substring(i1);
-        setTag(tag);
+        String hash = s.substring(s.indexOf("@"));
+        setTag(hash);
         s = s.replace("Activity", "A…");
         s = s.replace("Fragment", "F…");
-        s = s.replace(tag, " ");
+        s = s.replace(hash, " ");
 
         addLifecycle(s, lifecycle);
     }
@@ -68,9 +67,8 @@ public class ATextView extends AppCompatTextView implements Observer {
         if(arg instanceof LifecycleInfo) {
             LifecycleInfo info = (LifecycleInfo) arg;
             String s = info.fragments != null ? info.fragments.get(0) : info.activity;
-            int i1 = s.indexOf("@");
-            String tag = s.substring(i1);
-            if(TextUtils.equals((CharSequence) getTag(), tag)) {
+            String hash = s.substring(s.indexOf("@"));
+            if(TextUtils.equals((CharSequence) getTag(), hash)) {
                 s = getText().toString();
                 s = s.substring(0, s.lastIndexOf(" ") + 1);
                 addLifecycle(s, info.lifecycle);
