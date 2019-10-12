@@ -1,6 +1,7 @@
 package cc.rome753.activitytask.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import cc.rome753.activitytask.AUtils;
+import cc.rome753.activitytask.MainActivity;
 import cc.rome753.activitytask.R;
 import cc.rome753.activitytask.model.ATree;
 import cc.rome753.activitytask.model.LifecycleInfo;
@@ -22,7 +24,7 @@ import cc.rome753.activitytask.model.ViewPool;
  * Created by rome753 on 2017/3/31.
  */
 
-public class ActivityTaskView extends LinearLayout {
+public class ActivityTaskView extends LinearLayout implements Runnable {
 
     public static final String TAG = ActivityTaskView.class.getSimpleName();
     private ViewGroup mLinearLayout;
@@ -52,12 +54,13 @@ public class ActivityTaskView extends LinearLayout {
     long downTime;
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+        public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downTime = System.currentTimeMillis();
                 mInnerX = event.getX();
                 mInnerY = event.getY();
+                postDelayed(this, 300);
                 break;
             case MotionEvent.ACTION_MOVE:
                 float x = event.getRawX();
@@ -66,11 +69,17 @@ public class ActivityTaskView extends LinearLayout {
                 params.x = (int) (x - mInnerX);
                 params.y = (int) (y - mInnerY - mStatusHeight);
                 updateLayout(params);
+
+                if(Math.abs(event.getX() - mInnerX) > 20
+                        || Math.abs(event.getY() - mInnerY) > 20) {
+                    removeCallbacks(this);
+                }
                 break;
             case MotionEvent.ACTION_UP:
+                removeCallbacks(this);
                 if(System.currentTimeMillis() - downTime < 100
-                        && Math.abs(event.getX() - mInnerX) < 10
-                        && Math.abs(event.getY() - mInnerY) < 10) {
+                        && Math.abs(event.getX() - mInnerX) < 20
+                        && Math.abs(event.getY() - mInnerY) < 20) {
                     doClick();
                 }
                 moveToBorder();
@@ -84,6 +93,11 @@ public class ActivityTaskView extends LinearLayout {
         boolean visible = mTaskView.getVisibility() == VISIBLE;
         mTaskView.setVisibility(visible ? GONE : VISIBLE);
         mTinyView.setVisibility(!visible ? GONE : VISIBLE);
+    }
+
+    private void doLongClick() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        getContext().startActivity(intent);
     }
 
     private void updateLayout(WindowManager.LayoutParams params){
@@ -182,4 +196,8 @@ public class ActivityTaskView extends LinearLayout {
         notifyData();
     }
 
+    @Override
+    public void run() {
+        doLongClick();
+    }
 }

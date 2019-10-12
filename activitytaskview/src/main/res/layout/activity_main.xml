@@ -32,7 +32,7 @@
             android:id="@+id/btn_clear"
             android:text="Clear"
             android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@id/btn_permission"
+            app:layout_constraintBottom_toTopOf="@id/btn_exit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
@@ -42,7 +42,19 @@
             android:id="@+id/btn_exit"
             android:text="Exit"
             android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@id/btn_clear"
+            android:textColor="#FF0000"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_set_duration"
+            android:text="Set duration (ms)"
+            app:layout_constraintTop_toBottomOf="@id/btn_permission"
+            android:layout_marginTop="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
@@ -51,8 +63,10 @@
         <NumberPicker
             android:id="@+id/np"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_set_duration"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
