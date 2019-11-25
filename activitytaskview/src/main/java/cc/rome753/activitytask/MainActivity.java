@@ -64,10 +64,12 @@ public class MainActivity extends AppCompatActivity {
     private void checkWindowPermission() {
         if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
             binding.btnPermission.setVisibility(View.VISIBLE);
-            binding.tvPermission.setVisibility(View.INVISIBLE);
-        } else {
-            binding.btnPermission.setVisibility(View.INVISIBLE);
             binding.tvPermission.setVisibility(View.VISIBLE);
+            binding.tvPermissionHint.setVisibility(View.GONE);
+        } else {
+            binding.btnPermission.setVisibility(View.GONE);
+            binding.tvPermission.setVisibility(View.GONE);
+            binding.tvPermissionHint.setVisibility(View.VISIBLE);
             ActivityTask.start(this);
         }
     }

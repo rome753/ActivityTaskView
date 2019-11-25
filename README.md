@@ -49,14 +49,14 @@ https://github.com/rome753/ActivityTaskView/releases
 
 https://github.com/rome753/ActivityTaskView/blob/master/app/src/main/java/cc/rome753/demo/ActivityTaskHelper.java
 
-3. Use ActivityTaskHelper in your application's onCreate()
+3. Init ActivityTaskHelper in your application's onCreate()
 ```
     @Override
     public void onCreate() {
         super.onCreate();
 
         if(BuildConfig.DEBUG) {
-            new ActivityTaskHelper().init(this);
+            ActivityTaskHelper.init(this);
         }
     }
 ```

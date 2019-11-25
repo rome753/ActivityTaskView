@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ActivityTaskView</string>
+    <string name="float_window_hint">Float window is showing…\n\n* Click EXIT button to dismiss\n* Tap to switch between minimum and normal size\n* Long press to back to this activity</string>
 </resources>
