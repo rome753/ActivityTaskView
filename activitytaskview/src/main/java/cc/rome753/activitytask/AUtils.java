@@ -2,6 +2,8 @@ package cc.rome753.activitytask;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by rome753 on 2018/5/10.
@@ -28,5 +30,11 @@ public class AUtils {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static void removeParent(View view) {
+        if(view != null && view.getParent() instanceof ViewGroup) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 }

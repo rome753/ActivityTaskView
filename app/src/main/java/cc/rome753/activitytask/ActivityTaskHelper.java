@@ -1,4 +1,4 @@
-package cc.rome753.demo;
+package cc.rome753.activitytask;
 
 import android.app.Activity;
 import android.app.Application;

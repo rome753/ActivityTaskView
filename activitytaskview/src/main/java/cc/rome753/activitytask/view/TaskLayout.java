@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cc.rome753.activitytask.AUtils;
 import cc.rome753.activitytask.R;
 
 
@@ -39,6 +40,7 @@ public class TaskLayout extends FrameLayout {
     }
 
     public void addSecond(View view) {
+        AUtils.removeParent(view);
         ll.addView(view, 1);
     }
 

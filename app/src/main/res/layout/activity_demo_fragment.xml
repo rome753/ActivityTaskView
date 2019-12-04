@@ -5,19 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<fragment-->
-        <!--android:id="@+id/df"-->
-        <!--android:nacc.rome753.demo.DemoFragmentment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
-
-    <!--<FrameLayout-->
-        <!--android:id="@+id/content"-->
-        <!--android:background="@color/colorAccent"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-    <!--</FrameLayout>-->
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp"
         android:layout_width="match_parent"

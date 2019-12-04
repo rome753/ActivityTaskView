@@ -47,7 +47,7 @@ https://github.com/rome753/ActivityTaskView/releases
 
 2. Add ActivityTaskHelper.java file to you project
 
-https://github.com/rome753/ActivityTaskView/blob/master/app/src/main/java/cc/rome753/demo/ActivityTaskHelper.java
+https://github.com/rome753/ActivityTaskView/blob/master/app/src/main/java/cc/rome753/activitytask/ActivityTaskHelper.java
 
 3. Init ActivityTaskHelper in your application's onCreate()
 ```

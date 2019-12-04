@@ -63,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
         checkWindowPermission();
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(false);
+    }
+
     private void checkWindowPermission() {
         if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
             binding.btnPermission.setVisibility(View.VISIBLE);

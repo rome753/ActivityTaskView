@@ -97,6 +97,7 @@ public class ActivityTaskView extends LinearLayout implements Runnable {
 
     private void doLongClick() {
         Intent intent = new Intent(getContext().getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().getApplicationContext().startActivity(intent);
     }
 

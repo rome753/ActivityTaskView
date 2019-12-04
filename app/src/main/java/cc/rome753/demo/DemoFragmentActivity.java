@@ -2,6 +2,7 @@ package cc.rome753.demo;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,17 +20,23 @@ public class DemoFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_fragment);
+        setTitle(getClass().getSimpleName());
+        setActionBarBack();
 
-//        replaceCleanFragment(R.id.content, DemoFragment.newInstance("", ""));
-
-
-        fragmentList.add(PagerFragment.newInstance());
         for(int i = 0; i < 3; i++){
-            fragmentList.add(DemoFragment.newInstance("", ""));
+            fragmentList.add(DemoFragment.newInstance(i));
         }
         ViewPager vp = (ViewPager) findViewById(R.id.vp);
-        vp.setOffscreenPageLimit(2);
+        vp.setOffscreenPageLimit(1);
         vp.setAdapter(new DemoAdapter(getSupportFragmentManager()));
+    }
+
+    private void setActionBarBack() {
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     class DemoAdapter extends FragmentStatePagerAdapter {
@@ -49,11 +56,4 @@ public class DemoFragmentActivity extends AppCompatActivity {
         }
     }
 
-//    protected void replaceCleanFragment(int id, Fragment fragment) {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(id, fragment, fragment.getClass().getName());
-//        fragmentTransaction.commitAllowingStateLoss();
-//        getSupportFragmentManager().executePendingTransactions();
-//    }
 }

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Observable;
 
+import cc.rome753.activitytask.AUtils;
 import cc.rome753.activitytask.view.ATextView;
 import cc.rome753.activitytask.view.FragmentTaskView;
 
@@ -26,7 +27,7 @@ public class ViewPool extends Observable {
             for(int i = 0; i < viewGroup.getChildCount(); i++) {
                 View view = viewGroup.getChildAt(i);
                 if(view instanceof ATextView) {
-                    removeParent(view);
+                    AUtils.removeParent(view);
                     view.setTag(null);
                     pool.add((ATextView) view);
                 } else if(view instanceof FragmentTaskView) {
@@ -47,12 +48,6 @@ public class ViewPool extends Observable {
             view = pool.remove();
         }
         return view;
-    }
-
-    private void removeParent(View view) {
-        if(view != null && view.getParent() instanceof ViewGroup) {
-            ((ViewGroup) view.getParent()).removeView(view);
-        }
     }
 
     public void notifyLifecycleChange(LifecycleInfo info) {
