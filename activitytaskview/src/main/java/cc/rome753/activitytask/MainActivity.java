@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.NumberPicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             System.exit(0);
         });
 
+        binding.np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         binding.np.setMaxValue(intervals.length - 1);
         binding.np.setValue(3);
         binding.np.setDisplayedValues(intervals);
