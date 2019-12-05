@@ -1,19 +1,16 @@
-# ActivityTaskView-[中文文档](https://www.jianshu.com/p/c34483bb5c0f)
+# ActivityTaskView [[中文文档]](https://www.jianshu.com/p/c34483bb5c0f)
 
-https://github.com/rome753/ActivityTaskView/blob/master/screenshots/overview.gif
-![AcitivtyTask.png](https://upload-images.jianshu.io/upload_images/1896166-3055e957eb03b6d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Overview.png](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/overview.png)
 
-## Introduction
+## 1. New UI and Function
 
+![Overview.gif](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/overview.gif)
 
-### New UI and Function
-
-![ActivityTask.gif](https://upload-images.jianshu.io/upload_images/1896166-4a0425e42ae702c1.gif?imageMogr2/auto-orient/strip)
-
-- Show fragment tree of an activity
+- Show fragments in an activity
 - Show lifecycle text behind Activity/Fragment
 - Float window auto attach to border
-- Tap float window to show tiny icon, and tap to show again
+- Tap float window to show tiny icon
+- 0 dependency, just add 1 file to your project
 
 **Define short name**
 
@@ -24,29 +21,27 @@ Fragment | F…
 SaveInstanceState | SIS
 
 
-### Use in demo(show different launch mode)
+## 2. Launch mode demo
 
 #### standard mode
-![standard.gif](http://upload-images.jianshu.io/upload_images/1896166-210a9a551ffab54c.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![standard.gif](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/s.gif)
 
 #### singletop mode
-![singleTop.gif](http://upload-images.jianshu.io/upload_images/1896166-4d6150c0d9a947df.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![singleTop.gif](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/s-to.gif)
 
 #### singletask mode
-![singleTask.gif](http://upload-images.jianshu.io/upload_images/1896166-49db88012bbc36eb.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![singleTask.gif](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/s-ta.gif)
 
 #### singleinstance mode
-![singleInstance.gif](http://upload-images.jianshu.io/upload_images/1896166-ecad63efe81f10d8.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![singleInstance.gif](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/s-in.gif)
 
-#### dialog style activity
-![dialogStyle.gif](http://upload-images.jianshu.io/upload_images/1896166-538d3d530f8cd0d6.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+## 3. Use in your project
 
-## Usage
 1. Install ActivityTaskView release apk, open it and grant window permission
 
 https://github.com/rome753/ActivityTaskView/releases
 
-2. Add ActivityTaskHelper.java file to you project
+2. Add ActivityTaskHelper.java file to **your project**
 
 https://github.com/rome753/ActivityTaskView/blob/master/app/src/main/java/cc/rome753/activitytask/ActivityTaskHelper.java
 
