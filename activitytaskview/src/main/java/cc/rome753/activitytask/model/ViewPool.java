@@ -40,7 +40,7 @@ public class ViewPool extends Observable {
     }
 
     public ATextView getOne(Context context) {
-        ATextView view;notifyObservers();
+        ATextView view;
         if(pool.isEmpty()) {
             view = new ATextView(context);
             addObserver(view);
