@@ -1,9 +1,10 @@
-# ActivityTaskView
+# ActivityTaskView-[中文文档](https://www.jianshu.com/p/c34483bb5c0f)
 
+https://github.com/rome753/ActivityTaskView/blob/master/screenshots/overview.gif
 ![AcitivtyTask.png](https://upload-images.jianshu.io/upload_images/1896166-3055e957eb03b6d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Introduction
-[中文文档](https://www.jianshu.com/p/c34483bb5c0f)
+
 
 ### New UI and Function
 
