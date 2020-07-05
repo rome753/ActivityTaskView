@@ -1,8 +1,6 @@
-<a href="https://play.google.com/store/apps/details?id=cc.rome753.activitytask">
-  <img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" />
-</a>
+# ActivityTaskView 
 
-# ActivityTaskView [[中文文档]](https://www.jianshu.com/p/c34483bb5c0f)
+[[中文文档]](https://www.jianshu.com/p/c34483bb5c0f)
 
 ![Overview.png](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/overview.png)
 
