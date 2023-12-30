@@ -1,0 +1,15 @@
+<!-- HTML -->
+<!DOCTYPE html>
+<html>
+<body>
+  <pre id="log"></pre>
+  <script>
+    const source = new EventSource('/events');
+
+    source.onmessage = function(event) {
+      console.log(event.data);
+      document.getElementById('log').textContent += event.data + '\n';
+    };
+  </script>
+</body>
+</html>
