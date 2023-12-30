@@ -2,14 +2,118 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <pre id="log"></pre>
+  <ul id="view"></ul>
   <script>
     const source = new EventSource('/events');
 
+    var eventQueue = []; // Create a queue to store events
+    var isProcessing = false; // Flag to indicate whether an event is being processed
+
     source.onmessage = function(event) {
-      console.log(event.data);
-      document.getElementById('log').textContent += event.data + '\n';
+      eventQueue.push(event); // Add the event to the queue
+      processEvent(); // Start processing the event
     };
+
+    function processEvent() {
+      if (isProcessing || eventQueue.length === 0) {
+        // If an event is being processed, or the queue is empty, then return directly
+        return;
+      }
+
+      isProcessing = true; // Mark that an event is being processed
+      var event = eventQueue.shift(); // Take out an event from the queue
+
+      // Code to process the event
+      var data = event.data.split("ActivityTaskView.atv: ")[1];
+      // log(data);
+      var s = data.split(" ");
+      var task = s[0];
+      var activity = s[1];
+      var lifecycle = s[2];
+
+      var t = new ListNode(task);
+      var a = new ListNode(activity);
+      t.next = a;
+
+      if (s.length > 3) {
+        var fragments = s[3].slice(1, -1).split(",");
+        for (var i = fragments.length - 1; i >= 0; i--) {
+          a.next = new ListNode(fragments[i]);
+          a = a.next;
+        }
+      }
+
+      var ul = document.getElementById("view");
+      handleLifecycle(ul, t, lifecycle);
+
+      // Process the next event after 100 milliseconds
+      setTimeout(function() {
+        isProcessing = false; // Mark that the event processing has been completed
+        processEvent(); // Recursive call to process the next event
+      }, 100);
+    }
+
+    class ListNode {
+      constructor(value, next = null) {
+        this.value = value;
+        this.next = next;
+      }
+    }
+
+    function findChild(ul, id) {
+      var children = ul.children
+      for (var i = 0; i < children.length; i++) {
+        if (children[i].id == id) {
+          return children[i]
+        }
+      }
+      return null
+    }
+
+    function log(msg) {
+      console.log(msg)
+    }
+
+    function setText(li, name, lifecycle) {
+      name = name.split("@")[0]
+      lifecycle = lifecycle.replace("onActivity", "").replace("onFragment", "")
+      var text = name + " " + lifecycle
+      var t = li.children[0]
+      if (t == null) {
+        t = document.createElement("div")
+        li.appendChild(t)
+      }
+      t.textContent = text
+    }
+
+    function handleLifecycle(ul, head, lifecycle) {
+      var li = findChild(ul, head.value)
+      if (li == null) {
+        li = document.createElement("li")
+        li.id = head.value
+        setText(li, head.value, "")
+        ul.appendChild(li)
+      }
+
+      if (head.next != null && head.next.value != null && head.next.value != "") {
+        // head.next is null but head.next = object, object.value = ""
+        var ull = li.children[1]
+        if (ull != null) {
+          // no op
+        } else {
+          ull = document.createElement("ul")
+          li.appendChild(ull)
+        }
+        handleLifecycle(ull, head.next, lifecycle)
+      } else { // update current lifecycle or remove
+        setText(li, head.value, lifecycle)
+
+        if (lifecycle.includes('Destroy') || lifecycle.includes('Detach')) {
+          li.remove();
+        }
+      }
+    }
+
   </script>
 </body>
 </html>

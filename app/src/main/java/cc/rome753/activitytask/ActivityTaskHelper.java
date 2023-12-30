@@ -51,7 +51,7 @@ public class ActivityTaskHelper {
         String t = activity.getPackageName() + "@0x" + Integer.toHexString(activity.getTaskId());
         String a = getSimpleName(activity);
         String l = Thread.currentThread().getStackTrace()[5].getMethodName();
-        String fs = fgs == null ? "" : fgs.toString();
+        String fs = fgs == null ? "" : fgs.toString().replace(" ", "");
         Log.d("ActivityTaskView.atv", t + " " + a + " " + l + " " + fs);
 
         String packageName = "cc.rome753.activitytask";
