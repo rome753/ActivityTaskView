@@ -47,22 +47,29 @@ public class ActivityTaskHelper {
     }
 
     private void sendBroadcast(Activity activity, Fragment fragment) {
-        String lifecycle = Thread.currentThread().getStackTrace()[5].getMethodName();
+        ArrayList<String> fgs = getAllFragments(fragment);
+        String t = activity.getPackageName() + "@0x" + Integer.toHexString(activity.getTaskId());
+        String a = getSimpleName(activity);
+        String l = Thread.currentThread().getStackTrace()[5].getMethodName();
+        String fs = fgs == null ? "" : fgs.toString();
+        Log.d("ActivityTaskView.atv", t + " " + a + " " + l + " " + fs);
+
         String packageName = "cc.rome753.activitytask";
         Intent intent = new Intent(packageName + ".ACTION_UPDATE_LIFECYCLE");
         intent.setPackage(packageName);
-        intent.putExtra("lifecycle", lifecycle);
-        intent.putExtra("task", activity.getPackageName() + "@0x" + Integer.toHexString(activity.getTaskId()));
-        intent.putExtra("activity", getSimpleName(activity));
-        if(fragment != null) {
-            intent.putStringArrayListExtra("fragments", getAllFragments(fragment));
-        }
+        intent.putExtra("task", t);
+        intent.putExtra("activity", a);
+        intent.putExtra("lifecycle", l);
+        intent.putStringArrayListExtra("fragments", fgs);
         activity.sendBroadcast(intent);
     }
 
     private ArrayList<String> getAllFragments(Fragment fragment){
-        ArrayList<String> res = new ArrayList<>();
+        ArrayList<String> res = null;
         while(fragment != null){
+            if (res == null) {
+                res = new ArrayList<>();
+            }
             res.add(getSimpleName(fragment));
             fragment = fragment.getParentFragment();
         }
