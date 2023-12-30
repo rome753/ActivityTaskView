@@ -17,10 +17,10 @@
       for(var i = 0; i < arr.length; i++) {
         var data = arr[i];
         if (data != "") {
-          dataQueue.push(data); // 将事件添加到队列
+          dataQueue.push(data);
         }
       }
-      processEvent(); // 开始处理事件
+      processEvent();
     };
 
     function processEvent() {
@@ -34,8 +34,13 @@
 
       if (data instanceof HTMLLIElement) {
         var li = data // activity destroy or fragment detach
+
         var isActivityWaitFragment = false
-        log("checkWait " + li.children[0].textContent + " " + dataQueue.length + " " + !(dataQueue[0] instanceof String))
+        // DemoFragmentActivity@0xb49418a onActivityDestroyed 
+        // DemoFragmentActivity@0xb49418a onFragmentViewDestroyed [DemoFragment@0x8ad32bf]
+        // DemoFragmentActivity@0xb49418a onFragmentDestroyed [DemoFragment@0x8ad32bf]
+        // DemoFragmentActivity@0xb49418a onFragmentDetached [DemoFragment@0x8ad32bf]
+
         if (li.children[0].textContent.endsWith('Destroyed') && dataQueue.length > 0 && !(dataQueue[0] instanceof String)) {
           var next = dataQueue[0]
           var [task, lifecycle] = parseData(next)
