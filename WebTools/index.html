@@ -4,28 +4,68 @@
 <body>
   <ul id="view"></ul>
   <script>
-    const source = new EventSource('/events');
+    var socket = new WebSocket('ws://localhost:3000');
 
-    var eventQueue = []; // Create a queue to store events
+    var dataQueue = []; // Create a queue to store events
     var isProcessing = false; // Flag to indicate whether an event is being processed
 
-    source.onmessage = function(event) {
-      eventQueue.push(event); // Add the event to the queue
-      processEvent(); // Start processing the event
+    const DELAY = 100; // Delay time in ms to process the next event
+
+    socket.onmessage = function(event) {
+      // log(event.data)
+      var arr = event.data.split("\n");
+      for(var i = 0; i < arr.length; i++) {
+        var data = arr[i];
+        if (data != "") {
+          dataQueue.push(data); // 将事件添加到队列
+        }
+      }
+      processEvent(); // 开始处理事件
     };
 
     function processEvent() {
-      if (isProcessing || eventQueue.length === 0) {
+      if (isProcessing || dataQueue.length == 0) {
         // If an event is being processed, or the queue is empty, then return directly
         return;
       }
 
       isProcessing = true; // Mark that an event is being processed
-      var event = eventQueue.shift(); // Take out an event from the queue
+      var data = dataQueue.shift(); // Take out an event from the queue
 
-      // Code to process the event
-      var data = event.data.split("ActivityTaskView.atv: ")[1];
-      // log(data);
+      if (data instanceof HTMLLIElement) {
+        var li = data // activity destroy or fragment detach
+        var isActivityWaitFragment = false
+        log("checkWait " + li.children[0].textContent + " " + dataQueue.length + " " + !(dataQueue[0] instanceof String))
+        if (li.children[0].textContent.endsWith('Destroyed') && dataQueue.length > 0 && !(dataQueue[0] instanceof String)) {
+          var next = dataQueue[0]
+          var [task, lifecycle] = parseData(next)
+          // log("checkWait " + li.id + " " + task.next.value)
+          if (li.id == task.next.value) {
+            isActivityWaitFragment = true
+            dataQueue.shift() // next
+            dataQueue.unshift(li)
+            var ul = document.getElementById("view");
+            handleLifecycle(ul, task, lifecycle);
+          }
+        }
+        if (!isActivityWaitFragment) {
+          li.remove()
+        }
+      } else {
+        var ul = document.getElementById("view");
+        var [task, lifecycle] = parseData(data)
+        handleLifecycle(ul, task, lifecycle);
+      }
+
+      setTimeout(function() {
+        isProcessing = false; // Mark that the event processing has been completed
+        processEvent(); // Recursive call to process the next event
+      }, DELAY);
+    }
+
+    function parseData(data) {
+      // log("parse: " + data);
+      var data = data.split("ActivityTaskView.atv: ")[1];
       var s = data.split(" ");
       var task = s[0];
       var activity = s[1];
@@ -42,15 +82,7 @@
           a = a.next;
         }
       }
-
-      var ul = document.getElementById("view");
-      handleLifecycle(ul, t, lifecycle);
-
-      // Process the next event after 100 milliseconds
-      setTimeout(function() {
-        isProcessing = false; // Mark that the event processing has been completed
-        processEvent(); // Recursive call to process the next event
-      }, 100);
+      return [t, lifecycle];
     }
 
     class ListNode {
@@ -75,6 +107,7 @@
     }
 
     function setText(li, name, lifecycle) {
+      // log(name + " " + lifecycle)
       name = name.split("@")[0]
       lifecycle = lifecycle.replace("onActivity", "").replace("onFragment", "")
       var text = name + " " + lifecycle
@@ -108,8 +141,9 @@
       } else { // update current lifecycle or remove
         setText(li, head.value, lifecycle)
 
-        if (lifecycle.includes('Destroy') || lifecycle.includes('Detach')) {
-          li.remove();
+        if (lifecycle.endsWith('ActivityDestroyed') || lifecycle.endsWith('Detached')) {
+          // li.remove();
+          dataQueue.unshift(li)
         }
       }
     }

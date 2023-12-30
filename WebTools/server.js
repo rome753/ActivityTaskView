@@ -1,8 +1,10 @@
 // Node.js
 const express = require('express');
 const { spawn } = require('child_process');
+const WebSocket = require('ws');
+
 const app = express();
-const clients = [];
+const wss = new WebSocket.Server({ noServer: true });
 
 // 提供静态文件
 app.use(express.static(__dirname));
@@ -12,28 +14,24 @@ const adb = spawn('adb', ['logcat' , '-s', 'ActivityTaskView.atv']);
 
 adb.stdout.on('data', (data) => {
     // console.log(`stdout: ${data}`);
-    // 当有新的日志时，发送到所有SSE客户端
-    clients.forEach((res) => {
-        res.write(`data: ${data}\n\n`);
+    // 当有新的日志时，发送到所有WebSocket客户端
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(`data: ${data}`);
+        }
     });
 });
 
-app.get('/events', (req, res) => {
-    // 设置SSE相关的头
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.flushHeaders();
-
-    // 添加到客户端列表
-    clients.push(res);
-
-    // 当客户端断开连接时，从列表中移除
-    req.on('close', () => {
-        clients.splice(clients.indexOf(res), 1);
-    });
-});
-
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
     console.log('Server is running on port 3000');
+});
+
+wss.on('connection', ws => {
+    console.log('New client connected');
+});
+
+server.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, ws => {
+        wss.emit('connection', ws, request);
+    });
 });
