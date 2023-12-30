@@ -115,13 +115,39 @@
       // log(name + " " + lifecycle)
       name = name.split("@")[0]
       lifecycle = lifecycle.replace("onActivity", "").replace("onFragment", "")
-      var text = name + " " + lifecycle
-      var t = li.children[0]
-      if (t == null) {
-        t = document.createElement("div")
-        li.appendChild(t)
+      var div = li.children[0]
+      if (div == null) {
+        div = document.createElement("div")
+        li.appendChild(div)
       }
-      t.textContent = text
+      var span0 = div.children[0]
+      if (span0 == null) {
+        span0 = document.createElement("span")
+        div.appendChild(span0)
+      }
+      var span1 = div.children[1]
+      if (span1 == null) {
+        span1 = document.createElement("span")
+        div.appendChild(span1)
+      }
+      span0.textContent = name
+      span1.textContent = " " + lifecycle
+      span1.style.color = findColor(lifecycle)
+      span1.style.fontSize = 'smaller'
+    }
+
+    function findColor(lifecycle) {
+      var c = "black"
+      if (lifecycle.endsWith('Created') || lifecycle.endsWith('Started') || lifecycle.endsWith('Attached')) {
+        c = "orange"
+      } else if (lifecycle.endsWith('Resumed')) {
+        c = "red"
+      } else if (lifecycle.endsWith('Paused')) {
+        c = "blue"
+      } else if (lifecycle.endsWith('Destroyed') || lifecycle.endsWith('Detached')) {
+        c = "gray"
+      }
+      return c
     }
 
     function handleLifecycle(ul, head, lifecycle) {
