@@ -11,16 +11,25 @@
 
     const DELAY = 100; // Delay time in ms to process the next event
 
+    const TAG = "ActivityTaskView.atv: "
+
     socket.onmessage = function(event) {
       // log(event.data)
       var arr = event.data.split("\n");
       for(var i = 0; i < arr.length; i++) {
         var data = arr[i];
-        if (data != "") {
+        if (data.includes(TAG)) {
           dataQueue.push(data);
+        } else {
+          log("invalid data: " + data)
         }
       }
-      processEvent();
+      try {
+        processEvent()
+      } catch (e) {
+        isProcessing = false
+        log(e)
+      }
     };
 
     function processEvent() {
@@ -64,13 +73,18 @@
 
       setTimeout(function() {
         isProcessing = false; // Mark that the event processing has been completed
-        processEvent(); // Recursive call to process the next event
+        try {
+          processEvent()
+        } catch (e) {
+          isProcessing = false
+          log(e)
+        }
       }, DELAY);
     }
 
     function parseData(data) {
-      // log("parse: " + data);
-      var data = data.split("ActivityTaskView.atv: ")[1];
+      log("parse: " + data);
+      var data = data.split(TAG)[1];
       var s = data.split(" ");
       var task = s[0];
       var activity = s[1];
