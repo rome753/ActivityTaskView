@@ -1,6 +1,43 @@
 <!-- HTML -->
 <!DOCTYPE html>
 <html>
+<head>
+  <style>
+    ul {
+      list-style-type: none; /* 移除默认的列表标记 */
+      padding: 0;
+      margin: 0;
+    }
+
+    ul ul {
+      margin-left: 20px; /* 添加左边距来表示层级 */
+    }
+
+    li {
+      position: relative; /* 使伪元素定位相对于li元素 */
+      padding-left: 10px; /* 添加左边内边距 */
+    }
+
+    li::before {
+      content: ""; /* 伪元素的内容 */
+      position: absolute; /* 绝对定位 */
+      top: 0; /* 从顶部开始 */
+      left: 0; /* 在左边 */
+      width: 10px; /* 宽度 */
+      height: 100%; /* 高度 */
+      border-left: 1px solid #aaa; /* 添加左边边框 */
+    }
+    li::after {
+      content: ""; /* 伪元素的内容 */
+      position: absolute; /* 绝对定位 */
+      top: 10px; /* 从顶部开始 */
+      left: 0px; /* 在左边 */
+      width: 10px; /* 宽度 */
+      height: 1px; /* 高度 */
+      background-color: #aaa; /* 添加背景色 */
+    }
+  </style>
+</head>
 <body>
   <ul id="view"></ul>
   <script>
