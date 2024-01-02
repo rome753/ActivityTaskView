@@ -3,6 +3,10 @@
 <html>
 <head>
   <style>
+      body {
+        background-color: #333;
+        color: #f3f3f3;
+      }
     ul {
       list-style-type: none; /* 移除默认的列表标记 */
       padding: 0;
@@ -188,13 +192,13 @@
     }
 
     function findColor(lifecycle) {
-      var c = "black"
+      var c = "LightGray"
       if (lifecycle.endsWith('Created') || lifecycle.endsWith('Started') || lifecycle.endsWith('Attached')) {
         c = "orange"
       } else if (lifecycle.endsWith('Resumed')) {
         c = "red"
       } else if (lifecycle.endsWith('Paused')) {
-        c = "blue"
+        c = "green"
       } else if (lifecycle.endsWith('Destroyed') || lifecycle.endsWith('Detached')) {
         c = "gray"
       }
