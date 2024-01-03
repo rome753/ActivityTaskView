@@ -85,13 +85,14 @@
       if (data instanceof HTMLLIElement) {
         var li = data // activity destroy or fragment detach
 
+        var isActivity = li.children[0].textContent.endsWith('Destroyed')
         var isActivityWaitFragment = false
         // DemoFragmentActivity@0xb49418a onActivityDestroyed 
         // DemoFragmentActivity@0xb49418a onFragmentViewDestroyed [DemoFragment@0x8ad32bf]
         // DemoFragmentActivity@0xb49418a onFragmentDestroyed [DemoFragment@0x8ad32bf]
         // DemoFragmentActivity@0xb49418a onFragmentDetached [DemoFragment@0x8ad32bf]
 
-        if (li.children[0].textContent.endsWith('Destroyed') && dataQueue.length > 0 && !(dataQueue[0] instanceof String)) {
+        if (isActivity && dataQueue.length > 0 && !(dataQueue[0] instanceof String)) {
           var next = dataQueue[0]
           var [task, lifecycle] = parseData(next)
           // log("checkWait " + li.id + " " + task.next.value)
@@ -104,7 +105,11 @@
           }
         }
         if (!isActivityWaitFragment) {
+          var ul = li.parentElement
           li.remove()
+          if (isActivity && ul.children.length == 0) {
+            dataQueue.unshift(ul.parentElement) // delay remove task li
+          }
         }
       } else {
         var ul = document.getElementById("view");
