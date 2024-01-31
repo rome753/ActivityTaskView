@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 31
@@ -25,9 +26,25 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.startup:startup-runtime:1.1.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+
+// ------------ publish to jitpack ------------
+def GROUP_ID = "cc.rome753"
+def ARTIFACT_ID = "activitytasklib"
+def VERSION = "1.0.0"
+
+publishing {
+    publications {
+        register("release", MavenPublication) {
+            groupId = GROUP_ID
+            artifactId = ARTIFACT_ID
+            version = VERSION
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

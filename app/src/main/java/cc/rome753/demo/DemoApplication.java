@@ -2,8 +2,6 @@ package cc.rome753.demo;
 
 import android.app.Application;
 
-import cc.rome753.activitytasklib.ActivityTaskHelper;
-
 /**
  * Created by rome753@163.com on 2017/3/23.
  */
