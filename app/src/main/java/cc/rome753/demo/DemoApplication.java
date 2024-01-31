@@ -16,9 +16,9 @@ public class DemoApplication extends Application{
     public void onCreate() {
         super.onCreate();
 
-        if(BuildConfig.DEBUG) {
-            ActivityTaskHelper.init(this);
-        }
+//        if(BuildConfig.DEBUG) {
+//            ActivityTaskHelper.init(this);
+//        }
     }
 
 }
