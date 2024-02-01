@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +20,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".LifecycleReceiver">
+        <receiver android:name=".LifecycleReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="cc.rome753.activitytask.ACTION_UPDATE_LIFECYCLE" />
             </intent-filter>
