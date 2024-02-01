@@ -49,20 +49,20 @@ afterEvaluate {
     publishing {
         publications {
             // Creates a Maven publication called "release".
-            group = 'cc.rome753'
+            group = 'cc.rome753.activitytask'
             version = '1.0.0'
             release(MavenPublication) {
                 // Applies the component for the release build variant.
                 from components.release
                 groupId = group
-                artifactId = 'activitytasklib'
+                artifactId = 'lib'
                 version = version
             }
             debug(MavenPublication) {
                 // Applies the component for the release build variant.
                 from components.debug
                 groupId = group
-                artifactId = 'activitytasklib'
+                artifactId = 'lib'
                 version = version
             }
         }
