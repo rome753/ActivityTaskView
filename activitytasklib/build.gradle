@@ -62,7 +62,7 @@ afterEvaluate {
                 // Applies the component for the release build variant.
                 from components.debug
                 groupId = group
-                artifactId = 'lib'
+                artifactId = 'lib-debug'
                 version = version
             }
         }
