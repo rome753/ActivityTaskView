@@ -1,4 +1,4 @@
-# ActivityTaskView 
+# ActivityTaskView
 
 [[中文文档]](https://www.jianshu.com/p/c34483bb5c0f)
 
@@ -8,13 +8,16 @@
 
 ![Overview.gif](https://github.com/rome753/ActivityTaskView/blob/master/screenshots/overview.gif)
 
+WebTools - Show in PC browser
+- Show fragments in an activity
+- Show lifecycle text behind Activity/Fragment
+- No need to install app
+
+ActivityTaskView APP - Show in Android float window
 - Show fragments in an activity
 - Show lifecycle text behind Activity/Fragment
 - Float window auto attach to border
 - Tap float window to show tiny icon
-- 0 dependency, just add 1 file to your project
-
-**Define short name**
 
 Name | Short name
 -----|-----------
@@ -39,28 +42,44 @@ SaveInstanceState | SIS
 
 ## 3. Use in your project
 
-1. Install ActivityTaskView release apk, open it and grant window permission
-
-https://github.com/rome753/ActivityTaskView/releases
-
-2. Add ActivityTaskHelper.java file to **your project**
-
-https://github.com/rome753/ActivityTaskView/blob/master/app/src/main/java/cc/rome753/activitytask/ActivityTaskHelper.java
-
-3. Init ActivityTaskHelper in your application's onCreate()
+### Use WebTools(Recommend)
+1. Add jitpack to your project's build.gradle.
 ```
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        if(BuildConfig.DEBUG) {
-            ActivityTaskHelper.init(this);
-        }
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
     }
 ```
+
+2. Add dependency to your project, app module's build.gradle(No need to init, auto init with App StartUp).
+```
+    debugImplementation "com.github.rome753.ActivityTaskView:lib:1.0"
+```
+
+3. Enter WebTools directory, and run `npm install` to install dependencies, then run `node server.js` to start server(or click run.bat for Windows).
+4. Launch your app, and lifecycle will be showed in the browser.
+
+
+### Use ActivityTaskView APP
+1. Add jitpack to your project's build.gradle.
+```
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+```
+
+2. Add dependency to your project, app module's build.gradle(No need to init, auto init with App StartUp).
+```
+    debugImplementation "com.github.rome753.ActivityTaskView:lib:1.0"
+```
+
+3. Install ActivityTaskView release apk, open it and grant window permission
+
+https://github.com/rome753/ActivityTaskView/releases
 
 4. Launch your app, and lifecycles will be showed in the float window.
 
 ## License
-  Apache License, Version 2.0  
-  http://www.apache.org/licenses/
+Apache License, Version 2.0  
+http://www.apache.org/licenses/

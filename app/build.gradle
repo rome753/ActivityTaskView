@@ -26,8 +26,9 @@ android {
 }
 
 dependencies {
-    debugImplementation project(path: ':activitytasklib')
-//    debugImplementation "com.github.rome753.ActivityTaskView:1.0.0"
+//    debugImplementation project(path: ':activitytasklib') // local
+//    debugImplementation "com.github.rome753:ActivityTaskView:1.0" // jitpack get it
+    debugImplementation "com.github.rome753.ActivityTaskView:lib:1.0" // jitpack repository
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
