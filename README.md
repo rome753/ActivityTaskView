@@ -56,7 +56,9 @@ SaveInstanceState | SIS
     debugImplementation "com.github.rome753.ActivityTaskView:lib:1.0"
 ```
 
-3. Enter WebTools directory, and run `npm install` to install dependencies, then run `node server.js` to start server(or click run.bat for Windows).
+3. Enter WebTools directory, and run `npm install` to install dependencies, then run `node server.js`.
+> For windows, you can click run.bat to run 'node server.js'. For Mac, click run.command(chmod +x first).
+
 4. Launch your app, and lifecycle will be showed in the browser.
 
 
