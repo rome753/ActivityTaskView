@@ -1,2 +1,3 @@
-include ':app', ':activitytaskview', ':singleinstancedemo'
+include ':app'
+include ':activitytaskview'
 include ':activitytasklib'

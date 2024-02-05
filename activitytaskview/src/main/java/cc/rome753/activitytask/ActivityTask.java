@@ -10,13 +10,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 import cc.rome753.activitytask.model.LifecycleInfo;
 import cc.rome753.activitytask.view.ActivityTaskView;
-import cc.rome753.activitytask.view.FragmentTaskView;
 
 /**
  * Created by rome753@163.com on 2017/4/16.
@@ -90,7 +91,7 @@ public class ActivityTask {
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             if (System.currentTimeMillis() - lastTime < interval) {
                 sendEmptyMessageDelayed(0, interval / 5);
             } else {

@@ -16,6 +16,10 @@ import java.util.ArrayList;
 
 public class ActivityTaskHelper {
 
+    // If use WebTools only, set isSendBroadcast to false
+    public static boolean isSendBroadcast = true;
+
+    // Use AppStartUp, no need to call this method
     public static void init(Application app) {
         app.registerActivityLifecycleCallbacks(new ActivityTaskHelper().activityLifecycleImpl);
     }
@@ -27,7 +31,7 @@ public class ActivityTaskHelper {
             Log.e("ActivityTaskHelper", "handleFragment null");
             return;
         }
-        sendBroadcast(fragment.getActivity(), fragment);
+        notify(fragment.getActivity(), fragment);
     }
 
     private void handleFragment(Fragment fragment, Context context) {
@@ -35,7 +39,7 @@ public class ActivityTaskHelper {
             Log.e("ActivityTaskHelper", "handleFragment null");
             return;
         }
-        sendBroadcast((Activity) context, fragment);
+        notify((Activity) context, fragment);
     }
 
     private void handleActivity(Activity activity) {
@@ -43,10 +47,10 @@ public class ActivityTaskHelper {
             Log.e("ActivityTaskHelper", "handleActivity null");
             return;
         }
-        sendBroadcast(activity, null);
+        notify(activity, null);
     }
 
-    private void sendBroadcast(Activity activity, Fragment fragment) {
+    private void notify(Activity activity, Fragment fragment) {
         ArrayList<String> fgs = getAllFragments(fragment);
         String t = activity.getPackageName() + "@0x" + Integer.toHexString(activity.getTaskId());
         String a = getSimpleName(activity);
@@ -54,6 +58,9 @@ public class ActivityTaskHelper {
         String fs = fgs == null ? "" : fgs.toString().replace(" ", "");
         Log.d("ActivityTaskView.atv", t + " " + a + " " + l + " " + fs);
 
+        if (!isSendBroadcast) {
+            return;
+        }
         String packageName = "cc.rome753.activitytask";
         Intent intent = new Intent(packageName + ".ACTION_UPDATE_LIFECYCLE");
         intent.setPackage(packageName);
