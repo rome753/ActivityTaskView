@@ -7,6 +7,7 @@ task generateSourcesJar(type: Jar){
 }
 
 android {
+    namespace "cc.rome753.activitytasklib"
     compileSdkVersion 31
 
     defaultConfig {

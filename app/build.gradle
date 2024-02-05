@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace "cc.rome753.demo"
     compileSdkVersion 31
     defaultConfig {
         applicationId "cc.rome753.activitytask.demo"
